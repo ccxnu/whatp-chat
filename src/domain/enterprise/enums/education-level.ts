@@ -1,0 +1,6 @@
+export enum EducationLevel
+{
+  SECUNDARIA = 'SECUNDARIA',
+  UNIVERSITARIA = 'UNIVERSITARIA',
+  POSTGRADO = 'POSTGRADO',
+}

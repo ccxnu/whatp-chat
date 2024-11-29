@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "target": "ES2022",
+    "strict": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "removeComments": true,
+    "incremental": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@/core/*": ["src/core/*"],
+      "@/application/*": ["src/domain/application/*"],
+      "@/domain/*": ["src/domain/enterprise/*"],
+      "@/interface/*": ["src/interface/*"],
+      "@/infra/*": ["src/infra/*"],
+      "@/tests/*": ["tests/*"],
+      "@/src/*": ["src/*"]
+    },
+    "types": ["vitest/globals", "node"]
+  },
+  "exclude": ["node_modules", "dist"]
+}
