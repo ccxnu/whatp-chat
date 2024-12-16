@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 
 import { ViewCourseUseCase } from '@/application/use-cases/course/view';
-import { ResponseProcess } from '@/core/entities/response';
+import { CreateResponse } from '@/core/entities/response';
 import { Public } from '@/infra/auth/decorator/public.decorator';
 
 import { CourseDetailsPresenter } from '../../presenters/course-details.presenter';
@@ -39,6 +39,6 @@ export class ViewCourseController
 			}
 		}
 
-		return new ResponseProcess(CourseDetailsPresenter.toHttp(result.value.course));
+		return CreateResponse(CourseDetailsPresenter.toHttp(result.value.course));
 	}
 }

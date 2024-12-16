@@ -49,7 +49,7 @@ export class TikeeMailerRepository implements MailerRepository
       destinos: [user.email],
       plantilla,
       lista_vals_email: [
-        `${user.firstNames.toUpperCase()} ${user.lastNames.toUpperCase()}`,
+        `${user.fullName.toUpperCase()}`,
         user.email,
         emailTokenOrPassword,
         date.currentDate(),

@@ -16,15 +16,13 @@ import { User } from '@/domain/entities/user';
 
 interface RegisterAdminUseCaseRequest
 {
-	firstNames: string;
-	lastNames: string;
-  username: string;
+	fullName: string;
 	password: string;
 	email: string;
   cedula: string;
   phone: string;
 	gender: UserGenders;
-	birthDate: Date;
+	dateOfBirth: Date;
   role: UserRoles;
   ip: string;
   userAgent: string;
@@ -49,15 +47,13 @@ export class RegisterAdminUseCase
   {}
 
 	async execute({
-		firstNames,
-		lastNames,
-		username,
+		fullName,
     password,
 		email,
 		cedula,
 		phone,
 		gender,
-		birthDate,
+		dateOfBirth,
     role,
     ip,
     userAgent
@@ -77,25 +73,16 @@ export class RegisterAdminUseCase
 			return left(new UserAlreadyExistsError(`'${withSameEmail.email}'`));
     }
 
-		const withSameUsername = await this.userRepository.findByUnique(username);
-
-    if(withSameUsername)
-    {
-			return left(new UserAlreadyExistsError(`'${withSameUsername.username}'`));
-    }
-
 		const hashedPassword = await this.hashGenerator.hash(password);
 
 		const user = User.create({
-			firstNames,
-      lastNames,
-			username,
+			fullName,
 			password: hashedPassword,
 			email,
 			cedula,
 			phone,
 			gender,
-      birthDate,
+      dateOfBirth,
 			role,
       emailStatus: EmailStatus.NOT_VERIFIED,
 		})

@@ -29,6 +29,7 @@ import { SearchUserUseCase } from '@/application/use-cases/user/search';
 import { SendEmailTokenUseCase } from '@/application/use-cases/user/send-email-token';
 import { VerifyEmailUseCase } from '@/application/use-cases/user/verify-email';
 import { ViewUserUseCase } from '@/application/use-cases/user/view';
+import { AcademicokModule } from '@/infra/academicok/academicok.module';
 import { CryptographyModule } from '@/infra/cryptography/cryptography.module';
 import { DatabaseModule } from '@/infra/database/database.module';
 import { MailerModule } from '@/infra/mailer/mailer.module';
@@ -71,7 +72,8 @@ import { ViewUserAccountController } from './controllers/user/view.controller';
     DatabaseModule,
     CryptographyModule,
     MailerModule,
-    TransformerModule
+    TransformerModule,
+    AcademicokModule,
   ],
 	controllers:
   [

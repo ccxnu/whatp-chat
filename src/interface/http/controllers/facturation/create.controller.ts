@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { AlreadyExistsError } from '@/application/errors/entity-already-exists-error';
 import { CreateFacturationUseCase } from '@/application/use-cases/facturation/create';
-import { ResponseProcess } from '@/core/entities/response';
+import { CreateResponse } from '@/core/entities/response';
 import { IActiveUser } from '@/core/repositories/active-user-data';
 import { ActiveUser } from '@/infra/auth/decorator/active-user.decorator';
 import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';
@@ -78,6 +78,6 @@ export class CreateFacturationController
       }
     }
 
-    return new ResponseProcess();
+    return CreateResponse({});
 	}
 }

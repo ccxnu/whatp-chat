@@ -10,7 +10,7 @@ import { z } from 'zod';
 
 import { InvalidCredentialsError } from '@/application/errors/invalid-credentials-error';
 import { VerifyEmailUseCase } from '@/application/use-cases/user/verify-email';
-import { ResponseProcess } from '@/core/entities/response';
+import { CreateResponse } from '@/core/entities/response';
 import { Public } from '@/infra/auth/decorator/public.decorator';
 import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';
 
@@ -55,6 +55,6 @@ export class VerifyEmailController
 			}
 		}
 
-    return new ResponseProcess();
+    return CreateResponse({});
 	}
 }

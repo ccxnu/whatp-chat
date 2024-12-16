@@ -13,9 +13,9 @@ export interface CourseTable
   modality: CourseModality;
   location?: string | null;
   startDate: Date;
-  isPopular: boolean;
-  tags: string[];
+  isPopular: boolean | null;
+  tags: string[] | null;
   date_created: Date;
   date_updated: Date;
-	date_deleted: Date | null;
+	date_deleted?: Date | null;
 }

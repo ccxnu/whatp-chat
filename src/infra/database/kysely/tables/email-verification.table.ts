@@ -2,7 +2,7 @@ export interface EmailVerificationTable
 {
   id: string;
   user_id: string;
-	email_token: string | null;
+	email_token: string;
   date_created: Date;
-	date_deleted: Date | null;
+	date_deleted?: Date | null;
 }

@@ -2,7 +2,6 @@ import {
 	BadRequestException,
 	Body,
 	Controller,
-	Header,
 	HttpCode,
 	Post,
     StreamableFile,
@@ -27,8 +26,6 @@ export class DownloadCertificateController
 
 	@Post()
 	@HttpCode(200)
-  @Header('Content-Type', 'application/pdf')
-  @Header('Content-Disposition', 'attachment; filename=Certificado.pdf')
 	async handle(@Body(bodyValidationPipe) body: CreateBodySchema)
   {
     const { id } = body;

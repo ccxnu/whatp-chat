@@ -9,8 +9,8 @@ import { Certificate } from '@/domain/entities/certificate';
 interface EditEnrollmentUseCaseRequest
 {
   enrollmentId: string;
-  hasAccess: boolean;
-  isCompleted: boolean;
+  hasAccess?: boolean;
+  isCompleted?: boolean;
 }
 
 type EditEnrollmentUseCaseResponse = Either<

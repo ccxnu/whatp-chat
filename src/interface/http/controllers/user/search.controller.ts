@@ -23,7 +23,7 @@ export class SearchUserAccountController
 
 	@Get()
 	@HttpCode(200)
-	@Roles(UserRoles.ADMINISTRATOR)
+	@Roles(UserRoles.ADMINISTRADOR)
 	async handle(
 		@Query('query', ZodValidationQueryPipe) query: string,
 		@Query('limit', ZodValidationLimitPipe) limit: number,

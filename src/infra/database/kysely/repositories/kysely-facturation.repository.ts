@@ -100,7 +100,7 @@ export class KyselyFacturationRepository implements FacturationRepository
       builder = builder.where('is_member_of_equinoccio_network', '=', isMember);
     }
 
-    const { total } = await builder
+    const { total }: any = await builder
       .select((op) => op.fn.countAll<number>().as("total"))
       .executeTakeFirst();
 

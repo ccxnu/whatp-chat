@@ -1,70 +1,39 @@
 import { Entity } from '@/core/entities/entity';
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
-import { EmailStatus } from '@/core/repositories/email-status';
-import { UserGenders } from '@/core/repositories/genders';
-import { UserRoles } from '@/core/repositories/roles';
 import { Optional } from '@/core/types/optional';
-import { EducationLevel } from '@/domain/enums/education-level';
-import { JobPosition } from '@/domain/enums/job-position';
-import { ParticipationInCooperative } from '@/domain/enums/participation-cooperative';
+import { EmailStatus } from '@/domain/enums/user-email-status';
+import { UserGenders } from '@/domain/enums/user-gender';
+import { UserRoles } from '@/domain/enums/user-roles';
 
 export interface UserProps
 {
-	firstNames: string;
-	lastNames: string;
-  username: string;
+	fullName: string;
 	password: string;
 	email: string;
   cedula: string;
   phone: string;
 	gender: UserGenders;
-	birthDate: Date;
+	dateOfBirth: Date;
+  //city: string | null;
 
-  city: string | null;
-  hasDisability: boolean | null;
-  educationLevel: EducationLevel | null;
-  participationInCooperative: ParticipationInCooperative | null;
-  jobPosition: JobPosition | null;
-
-  facturationId: UniqueEntityId | null;
-
+  //isTfaEnable: boolean;
+  //tfaSecretTfa: string;
 	role: UserRoles;
   emailStatus: EmailStatus;
   dateCreated: Date;
   dateUpdated: Date;
-	dateDeleted?: Date | null;
 }
 
 export class User extends Entity<UserProps>
 {
-	get firstNames()
+	get fullName()
   {
-		return this.props.firstNames;
+		return this.props.fullName;
 	}
 
-	set firstNames(first_names: string)
+	set fullName(name: string)
   {
-		this.props.firstNames = first_names;
-	}
-
-	get lastNames()
-  {
-		return this.props.lastNames;
-	}
-
-	set lastNames(last_names: string)
-  {
-		this.props.lastNames = last_names;
-	}
-
-	get username()
-  {
-		return this.props.username;
-	}
-
-	set username(username: string)
-  {
-		this.props.username = username;
+		this.props.fullName = name;
 	}
 
 	get password()
@@ -117,74 +86,14 @@ export class User extends Entity<UserProps>
 		this.props.gender = gender;
 	}
 
-	get birthDate()
+	get dateOfBirth()
   {
-		return this.props.birthDate;
+		return this.props.dateOfBirth;
 	}
 
-	set birthDate(birthDate: Date)
+	set dateOfBirth(date: Date)
   {
-		this.props.birthDate = birthDate;
-	}
-
-	get city()
-  {
-		return this.props.city;
-	}
-
-	set city(city: string)
-  {
-		this.props.city = city;
-	}
-
-	get hasDisability()
-  {
-		return this.props.hasDisability;
-	}
-
-	set hasDisability(hasDisability: boolean)
-  {
-		this.props.hasDisability = hasDisability;
-	}
-
-	get educationLevel()
-  {
-		return this.props.educationLevel;
-	}
-
-	set educationLevel(level: EducationLevel)
-  {
-		this.props.educationLevel = level;
-	}
-
-	get participationInCooperative()
-  {
-		return this.props.participationInCooperative;
-	}
-
-	set participationInCooperative(part: ParticipationInCooperative)
-  {
-		this.props.participationInCooperative = part;
-	}
-
-	get jobPosition()
-  {
-		return this.props.jobPosition;
-	}
-
-	set jobPosition(job: JobPosition)
-  {
-		this.props.jobPosition = job;
-	}
-
-	get facturationId()
-  {
-		return this.props.facturationId;
-	}
-
-	set facturationId(id: UniqueEntityId | null)
-  {
-		this.props.facturationId = id;
+		this.props.dateOfBirth = date;
 	}
 
 	get role()
@@ -222,44 +131,17 @@ export class User extends Entity<UserProps>
 		this.props.dateUpdated = new Date();
 	}
 
-	get dateDeleted()
-  {
-		return this.props.dateDeleted;
-	}
-
-	deleteUser()
-  {
-		this.props.dateDeleted = new Date();
-	}
-
-	recoverUser()
-  {
-		this.props.dateDeleted = null
-	}
-
 	static create(
     props: Optional<
       UserProps,
       'dateCreated' |
-      'dateUpdated' |
-      'city' |
-      'hasDisability' |
-      'educationLevel' |
-      'participationInCooperative' |
-      'jobPosition' |
-      'facturationId'>,
+      'dateUpdated'>,
     id?: UniqueEntityId
   )
   {
 		const user = new User(
       {
         ...props,
-        city: props.city ?? null,
-        hasDisability: props.hasDisability ?? null,
-        educationLevel: props.educationLevel ?? null,
-        participationInCooperative: props.participationInCooperative ?? null,
-        jobPosition: props.jobPosition ?? null,
-        facturationId: props.facturationId ?? null,
 				dateCreated: props.dateCreated ?? new Date(),
 				dateUpdated: props.dateUpdated ?? new Date(),
       },

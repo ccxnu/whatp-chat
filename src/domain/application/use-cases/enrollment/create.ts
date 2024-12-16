@@ -9,7 +9,7 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id';
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error';
 import { UnauthorizedError } from '@/core/errors/unauthorized-error';
 import { Enrollment } from '@/domain/entities/enrollment';
-import { JobPosition } from '@/domain/enums/job-position';
+
 
 interface EnrollmentUseCaseRequest
 {
@@ -43,22 +43,6 @@ export class CreateEnrollmentUseCase
 			return left(new ResourceNotFoundError());
 		}
 
-    if (
-      user.city === null ||
-      user.hasDisability === null ||
-      user.educationLevel === null ||
-      user.participationInCooperative === null ||
-      JobPosition === null
-    )
-    {
-			return left(new UnauthorizedError('Debe completar su información adicional'));
-    }
-
-    if (user.facturationId === null)
-    {
-			return left(new UnauthorizedError('Debe completar su información de facturación'));
-    }
-
     const course = await this.courseRepository.findById(courseId);
 
     if (!course)
@@ -85,6 +69,6 @@ export class CreateEnrollmentUseCase
 
     await this.enrollmentRepository.create(newEnrollment);
 
-    return right({ enrollment });
+    return right({ enrollment: newEnrollment });
   }
 }

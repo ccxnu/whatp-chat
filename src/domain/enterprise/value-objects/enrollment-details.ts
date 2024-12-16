@@ -15,14 +15,14 @@ export interface EnrollmentDetailsProps
     lastNames: string;
     cedula: string;
     email: string;
-	};
+	} | null;
 	course: {
 		courseId: UniqueEntityId;
     name: string;
     category: string;
     modality: CourseModality;
     duration: number;
-	}
+	} | null;
 }
 
 export class EnrollmentDetails extends ValueObject<EnrollmentDetailsProps>

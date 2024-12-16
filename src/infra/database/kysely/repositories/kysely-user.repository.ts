@@ -21,7 +21,6 @@ export class KyselyUserRepository implements UserRepository
     const user = await this.database
       .selectFrom('user')
       .where('id', '=', id)
-      .where('date_deleted', 'is', null)
       .selectAll()
       .executeTakeFirst();
 
@@ -35,7 +34,6 @@ export class KyselyUserRepository implements UserRepository
     const user = await this.database
       .selectFrom('user')
       .where('id', '=', id)
-      .where('date_deleted', 'is not', null)
       .selectAll()
       .executeTakeFirst();
 
@@ -48,23 +46,8 @@ export class KyselyUserRepository implements UserRepository
   {
     const user = await this.database
       .selectFrom('user')
-      .leftJoin('facturation', 'facturation.id', 'user.facturation_id')
       .where('user.id', '=', id)
-      .where('date_deleted', 'is', null)
       .selectAll('user')
-      .select([
-        'facturation.id as facturation_id',
-        'facturation.legal_name',
-        'facturation.ruc_or_cedula',
-        'facturation.phone_number',
-        'facturation.accounting_email',
-        'facturation.province',
-        'facturation.canton',
-        'facturation.main_street',
-        'facturation.addrees_number',
-        'facturation.secondary_street',
-        'facturation.is_member_of_equinoccio_network',
-      ])
       .executeTakeFirst();
 
       console.log(user)
@@ -74,25 +57,11 @@ export class KyselyUserRepository implements UserRepository
     return KyselyUserDetailsMapper.toDomain(user);
   }
 
-  async findByUsername(username: string): Promise<User | null>
-  {
-    const user = await this.database
-      .selectFrom('user')
-      .where('username', '=', username)
-      .selectAll()
-      .executeTakeFirst();
-
-    if (!user) return null;
-
-    return KyselyUserMapper.toDomain(user);
-  }
-
   async findByEmail(email: string): Promise<User | null>
   {
     const user = await this.database
       .selectFrom('user')
       .where('email', '=', email)
-      .where('date_deleted', 'is', null)
       .selectAll()
       .executeTakeFirst();
 
@@ -100,6 +69,20 @@ export class KyselyUserRepository implements UserRepository
 
     return KyselyUserMapper.toDomain(user);
   }
+
+  async findByCedula(cedula: string): Promise<User | null>
+  {
+    const user = await this.database
+      .selectFrom('user')
+      .where('cedula', '=', cedula)
+      .selectAll()
+      .executeTakeFirst();
+
+    if (!user) return null;
+
+    return KyselyUserMapper.toDomain(user);
+  }
+
 
   async findByUnique(unique: string): Promise<User | null>
   {
@@ -108,9 +91,7 @@ export class KyselyUserRepository implements UserRepository
       .where((op) => op.or([
         op('cedula', '=', unique),
         op('email', '=', unique),
-        op('username', '=', unique)
       ]))
-      .where('date_deleted', 'is', null)
       .selectAll()
       .executeTakeFirst();
 
@@ -122,12 +103,7 @@ export class KyselyUserRepository implements UserRepository
   async findManyByFilters(props: FindManyByFiltersParams): Promise<PaginationData<UserDetails[]>>
   {
     const {
-      hasDisability,
-      educationLevel,
-      participation,
-      jobPosition,
       role,
-      deleted,
       page,
       perPage
     } = props;
@@ -136,27 +112,6 @@ export class KyselyUserRepository implements UserRepository
 
     let builder = this.database
       .selectFrom('user')
-      .where('date_deleted', deleted ? 'is not' : 'is', null)
-
-    if (hasDisability !== undefined)
-    {
-      builder = builder.where('has_disability', '=', hasDisability);
-    }
-
-    if (educationLevel)
-    {
-      builder = builder.where('education_level', '=', educationLevel);
-    }
-
-    if (participation)
-    {
-      builder = builder.where('participation_in_cooperative', '=', participation);
-    }
-
-    if (jobPosition)
-    {
-      builder = builder.where('job_position', '=', jobPosition);
-    }
 
     if (role)
     {
@@ -164,8 +119,8 @@ export class KyselyUserRepository implements UserRepository
     }
 
 
-    const { countPeople } = await builder
-      .select((op) => op.fn.countAll<number>().as("countPeople"))
+    const { countResult }: any = await builder
+      .select((op) => op.fn.countAll<number>().as("countResult"))
       .executeTakeFirst();
 
     const people = await builder
@@ -180,8 +135,8 @@ export class KyselyUserRepository implements UserRepository
 				return KyselyUserDetailsMapper.toDomain(item);
 			}),
 			perPage,
-			totalPages: Math.ceil(countPeople / perPage),
-			totalItems: countPeople,
+			totalPages: Math.ceil(countResult / perPage),
+			totalItems: countResult,
 		}
 
   }
@@ -192,13 +147,9 @@ export class KyselyUserRepository implements UserRepository
 
     const people = await this.database
       .selectFrom('user')
-      .where('date_deleted', 'is', null)
       .where((op) => op.or([
-        op('first_names', 'like', `%${query}%`),
-        op('last_names', 'like', `%${query}%`),
-        op('username', 'like', `%${query}%`),
+        op('full_name', 'like', `%${query}%`),
         op('cedula', 'like', `%${query}%`),
-        op('city', 'like', `%${query}%`),
       ]))
       .limit(limit)
       .selectAll()
@@ -248,26 +199,21 @@ export class KyselyUserRepository implements UserRepository
 
 	async delete(person: User): Promise<void>
   {
-		person.deleteUser()
-
-		const { id, date_deleted } = KyselyUserMapper.toKysely(person);
+		const { id } = KyselyUserMapper.toKysely(person);
 
 		await this.database
-      .updateTable('user')
-      .set({ date_deleted })
+      .deleteFrom('user')
       .where('id', '=', id)
       .executeTakeFirst();
 	}
 
 	async recover(person: User): Promise<void>
   {
-		person.recoverUser()
 
-		const { id, date_deleted } = KyselyUserMapper.toKysely(person);
+		const { id } = KyselyUserMapper.toKysely(person);
 
 		await this.database
-      .updateTable('user')
-      .set({ date_deleted })
+      .deleteFrom('user')
       .where('id', '=', id)
       .executeTakeFirst();
 	}

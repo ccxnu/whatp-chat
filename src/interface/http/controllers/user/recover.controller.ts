@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 
 import { RecoverUserUseCase } from '@/application/use-cases/user/recover';
-import { ResponseProcess } from '@/core/entities/response';
+import { CreateResponse } from '@/core/entities/response';
 import { UserRoles } from '@/core/repositories/roles';
 import { Roles } from '@/infra/auth/decorator/user-roles.decorator';
 
@@ -21,7 +21,7 @@ export class RecoverUserAccountController
 
 	@Post()
 	@HttpCode(200)
-	@Roles(UserRoles.ADMINISTRATOR)
+	@Roles(UserRoles.ADMINISTRADOR)
 	async handle(@Param('userId', ParseUUIDPipe) id: string)
   {
 		const result = await this.recoverUseCase.execute({
@@ -39,6 +39,6 @@ export class RecoverUserAccountController
 			}
 		}
 
-    return new ResponseProcess();
+    return CreateResponse({});
 	}
 }

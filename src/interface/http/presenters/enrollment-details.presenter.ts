@@ -10,14 +10,14 @@ export class EnrollmentDetailsPresenter
       isCompleted: details.isCompleted,
       dateCreated: details.dateCreated,
       dateUpdated: details.dateUpdated,
-      user: {
+      user: !details.user ? null : {
         userId: details.user.userId.toString(),
         firstNames: details.user.firstNames,
         lastNames: details.user.lastNames,
         cedula: details.user.cedula,
         email: details.user.email,
       },
-      course: {
+      course: !details.course ? null : {
         courseId: details.course.courseId.toString(),
         name: details.course.name,
         category: details.course.category,

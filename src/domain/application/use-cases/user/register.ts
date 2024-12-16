@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
+import { AcademicokRepository } from '@/application/academicok/academicok';
 import { HashGenerator } from '@/application/cryptography/hash-generator';
 import { UserAlreadyExistsError } from '@/application/errors/user-already-exists-error';
 import { MailerRepository } from '@/application/mailer/mailer';
@@ -7,24 +8,21 @@ import { EmailVerificationRepository } from '@/application/repositories/email-ve
 import { UserRepository } from '@/application/repositories/user.repository';
 import { Either, left, right } from '@/core/either';
 import { RandomNumber } from '@/core/entities/random-number';
+import { UnauthorizedError } from '@/core/errors/unauthorized-error';
 import { EmailStatus } from '@/core/repositories/email-status';
 import { UserGenders } from '@/core/repositories/genders';
-import { UserRoles } from '@/core/repositories/roles';
 import { EmailVerification } from '@/domain/entities/email-verification';
 import { User } from '@/domain/entities/user';
 
 
 interface RegisterUserUseCaseRequest
 {
-	firstNames: string;
-	lastNames: string;
-  username: string;
-	password: string;
-	email: string;
   cedula: string;
+	password: string;
   phone: string;
 	gender: UserGenders;
-	birthDate: Date;
+	dateOfBirth: Date;
+  city: string;
   ip: string;
   userAgent: string;
 }
@@ -44,57 +42,53 @@ export class RegisterUserUseCase
 		private readonly emailVerificationRepository: EmailVerificationRepository,
 		private readonly hashGenerator: HashGenerator,
 		private readonly mailerRepository: MailerRepository,
+    private readonly academicokRepository: AcademicokRepository,
 	)
   {}
 
 	async execute({
-		firstNames,
-		lastNames,
-		username,
     password,
-		email,
 		cedula,
 		phone,
 		gender,
-		birthDate,
+		dateOfBirth,
     ip,
     userAgent,
 	}: RegisterUserUseCaseRequest): Promise<RegisterUserUseCaseResponse>
   {
-		const withSameCedula = await this.userRepository.findByUnique(cedula);
+    // TODO: endpoint para recuperar un usuario
+		const withSameCedula = await this.userRepository.findByCedula(cedula);
 
     if(withSameCedula)
     {
 			return left(new UserAlreadyExistsError(`'${withSameCedula.cedula}''`))
     }
 
-		const withSameEmail = await this.userRepository.findByUnique(email);
+    const academicokUser = await this.academicokRepository.fetchUserInfo(cedula);
+
+    if (!academicokUser)
+    {
+      return left(new UnauthorizedError('No pertenece a la institución'));
+    }
+
+		const withSameEmail = await this.userRepository.findByEmail(academicokUser.email);
 
     if(withSameEmail)
     {
 			return left(new UserAlreadyExistsError(`'${withSameEmail.email}'`));
     }
 
-		const withSameUsername = await this.userRepository.findByUnique(username);
-
-    if(withSameUsername)
-    {
-			return left(new UserAlreadyExistsError(`'${withSameUsername.username}'`));
-    }
-
 		const hashedPassword = await this.hashGenerator.hash(password);
 
 		const user = User.create({
-			firstNames,
-      lastNames,
-			username,
+			fullName: academicokUser.fullName,
 			password: hashedPassword,
-			email,
-			cedula,
+			email: academicokUser.email,
+			cedula: academicokUser.cedula,
 			phone,
 			gender,
-      birthDate,
-			role: UserRoles.ESTUDIANTE,
+      dateOfBirth,
+			role: academicokUser.role,
       emailStatus: EmailStatus.NOT_VERIFIED,
 		})
 
@@ -104,7 +98,6 @@ export class RegisterUserUseCase
       userId: user.id.toString(),
       emailToken,
     })
-
 
 		await this.userRepository.create(user);
 

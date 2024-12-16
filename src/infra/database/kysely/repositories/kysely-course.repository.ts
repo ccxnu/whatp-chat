@@ -179,7 +179,7 @@ export class KyselyCourseRepository implements CourseRepository
       builder = builder.where('location', 'like', location);
     }
 
-    const { countCourses } = await builder
+    const { countCourses }: any = await builder
       .select((op) => op.fn.countAll<number>().as("countCourses"))
       .executeTakeFirst();
 

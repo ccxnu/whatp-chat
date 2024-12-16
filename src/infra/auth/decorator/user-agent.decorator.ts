@@ -1,10 +1,13 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 
+import { REQUEST_USER_AGENT } from '../constants';
+
 export const UserAgent = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext): string =>
+  (ctx: ExecutionContext) =>
   {
     const request = ctx.switchToHttp().getRequest<FastifyRequest>();
-    return request.headers['user-agent'];
+    const agent: string | undefined = request.headers[REQUEST_USER_AGENT];
+    return agent;
   },
 );

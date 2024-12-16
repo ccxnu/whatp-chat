@@ -8,18 +8,18 @@ import {
 import { z } from 'zod';
 
 import { ChangeUserPasswordUseCase } from '@/application/use-cases/user/change-password';
-import { ResponseProcess } from '@/core/entities/response';
+import { CreateResponse } from '@/core/entities/response';
 import { IActiveUser } from '@/core/repositories/active-user-data';
 import { ActiveUser } from '@/infra/auth/decorator/active-user.decorator';
 import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';
 
 
-const editAccountPasswordBodySchema = z.object({
+const schema = z.object({
 	password: z.string().min(8).max(60),
 })
 
-type EditAccountPasswordBodySchema = z.infer<typeof editAccountPasswordBodySchema>
-const bodyValidationPipe = new ZodValidationPipe(editAccountPasswordBodySchema)
+type EditPasswordBodySchema = z.infer<typeof schema>
+const bodyValidationPipe = new ZodValidationPipe(schema)
 
 @Controller('/user/change-password')
 export class ChangeUserPasswordController
@@ -30,7 +30,7 @@ export class ChangeUserPasswordController
 	@Post()
 	@HttpCode(200)
 	async handle(
-		@Body(bodyValidationPipe) body: EditAccountPasswordBodySchema,
+		@Body(bodyValidationPipe) body: EditPasswordBodySchema,
     @ActiveUser() user: IActiveUser,
 	)
   {
@@ -52,6 +52,6 @@ export class ChangeUserPasswordController
 			}
 		}
 
-    return new ResponseProcess();
+    return CreateResponse({});
 	}
 }

@@ -50,8 +50,6 @@ export class CreateFacturationUseCase
 
     await this.cooperativeRepository.create(facturation);
 
-    user.facturationId = facturation.id;
-
     await this.userRepository.edit(user);
 
     return right({ facturation });

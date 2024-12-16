@@ -1,7 +1,7 @@
 import { BadRequestException, Controller, HttpCode, Param, ParseUUIDPipe, Post } from '@nestjs/common';
 
 import { DeleteUserUseCase } from '@/application/use-cases/user/delete';
-import { ResponseProcess } from '@/core/entities/response';
+import { CreateResponse } from '@/core/entities/response';
 import { UserRoles } from '@/core/repositories/roles';
 import { Roles } from '@/infra/auth/decorator/user-roles.decorator';
 
@@ -14,7 +14,7 @@ export class DeleteUserAccountController
 
 	@Post()
 	@HttpCode(200)
-  @Roles(UserRoles.ADMINISTRATOR)
+  @Roles(UserRoles.ADMINISTRADOR)
 	async handle(@Param('userId', ParseUUIDPipe) userId: string)
   {
 		const result = await this.deleteUseCase.execute({
@@ -32,6 +32,6 @@ export class DeleteUserAccountController
 			}
 		}
 
-    return new ResponseProcess();
+    return CreateResponse({});
 	}
 }

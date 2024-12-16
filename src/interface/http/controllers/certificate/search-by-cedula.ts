@@ -9,7 +9,7 @@ import { z } from 'zod';
 
 import { InvalidQueryLengthError } from '@/application/errors/invalid-query-length-error';
 import { SearchCertificateUseCase } from '@/application/use-cases/certificate/search-by-cedula';
-import { ResponseProcess } from '@/core/entities/response';
+import { CreateResponse } from '@/core/entities/response';
 import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';
 import { CertificateDetailsPresenter } from '@/interface/http/presenters/certificate-details.presenter';
 
@@ -49,7 +49,7 @@ export class SearchCertificateController
 			}
 		}
 
-    return new ResponseProcess(
+    return CreateResponse(
        response.value.certificates.map((item) =>
          CertificateDetailsPresenter.toHttp(item))
     );

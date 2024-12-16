@@ -18,8 +18,8 @@ export interface CourseProps
   //locationId?: UniqueEntityId | null;
 
   startDate: Date; // Fecha de inicio
-  isPopular?: boolean;
-  tags?: string[]; // Etiquetas asociadas al curso, ej. ["JavaScript", "Frontend"]
+  isPopular: boolean | null;
+  tags: string[] | null; // Etiquetas asociadas al curso, ej. ["JavaScript", "Frontend"]
 
   dateCreated: Date;
   dateUpdated: Date;
@@ -113,7 +113,7 @@ export class Course extends Entity<CourseProps>
 		return this.props.isPopular;
 	}
 
-	set isPopular(isPopular: boolean)
+	set isPopular(isPopular: boolean | null)
   {
 		this.props.isPopular = isPopular;
 	}
@@ -123,7 +123,7 @@ export class Course extends Entity<CourseProps>
     return this.props.tags;
   }
 
-  set tags(tags: string[])
+  set tags(tags: string[] | null)
   {
     this.props.tags = tags;
   }

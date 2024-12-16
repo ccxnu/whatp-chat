@@ -8,16 +8,16 @@ import { Either, left, right } from '@/core/either';
 import { UnauthorizedError } from '@/core/errors/unauthorized-error';
 import { EmailStatus } from '@/core/repositories/email-status';
 
-interface AuthenticateUserUseCaseRequest
+export interface UseCaseRequest
 {
-	username: string;
+	email: string;
 	password: string;
 }
 
-type AuthenticateUserUseCaseResponse = Either<
+type UseCaseResponse = Either<
 	InvalidCredentialsError | UnauthorizedError,
 	{
-		user: {};
+		accessToken: string;
 	}
 >
 
@@ -31,17 +31,11 @@ export class AuthenticateUserUseCase
 	)
   {}
 
-	async execute({ username, password }: AuthenticateUserUseCaseRequest):
-    Promise<AuthenticateUserUseCaseResponse>
+	async execute({ email, password }: UseCaseRequest): Promise<UseCaseResponse>
   {
-		const user = await this.studentRepository.findByUsername(username);
+		const user = await this.studentRepository.findByEmail(email);
 
 		if (!user)
-    {
-			return left(new InvalidCredentialsError());
-		}
-
-		if (user.dateDeleted !== null)
     {
 			return left(new InvalidCredentialsError());
 		}
@@ -67,17 +61,6 @@ export class AuthenticateUserUseCase
 			role: user.role,
 		})
 
-		if (!accessToken)
-    {
-			return left(new UnauthorizedError());
-		}
-
-    const response = {
-      id: user.id.toString(),
-      rol: user.role,
-      accessToken
-    }
-
-		return right({ user: response })
+		return right({ accessToken })
 	}
 }

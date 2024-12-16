@@ -9,26 +9,17 @@ export class KyselyUserMapper
   {
 		return User.create(
 			{
-        firstNames: raw.first_names,
-        lastNames: raw.last_names,
-				username: raw.username,
+        fullName: raw.full_name,
 				password: raw.password,
 				email: raw.email,
 				cedula: raw.cedula,
         phone: raw.phone,
         gender: raw.gender,
-        birthDate: raw.birth_date,
-        city: raw.city,
-        hasDisability: raw.has_disability,
-        educationLevel: raw.education_level,
-        participationInCooperative: raw.participation_in_cooperative,
-        jobPosition: raw.job_position,
-        facturationId: raw.facturation_id ? new UniqueEntityId(raw.facturation_id) : null,
+        dateOfBirth: raw.birth_date,
 				role: raw.role,
         emailStatus: raw.email_status,
         dateCreated: raw.date_created,
         dateUpdated: raw.date_updated,
-        dateDeleted: raw.date_deleted,
 			},
 			new UniqueEntityId(raw.id),
 		)
@@ -38,26 +29,17 @@ export class KyselyUserMapper
   {
 		return {
       id: user.id.toString(),
-      first_names: user.firstNames,
-      last_names: user.lastNames,
-      username: user.username,
+      full_name: user.fullName,
       password: user.password,
       email: user.email,
       cedula: user.cedula,
       phone: user.phone,
       gender: user.gender,
-      birth_date: user.birthDate,
-      city: user.city,
-      has_disability: user.hasDisability,
-      education_level: user.educationLevel,
-      participation_in_cooperative: user.participationInCooperative,
-      job_position: user.jobPosition,
-      facturation_id: user.facturationId ? user.facturationId.toString() : null,
+      birth_date: user.dateOfBirth,
       role: user.role,
       email_status: user.emailStatus,
       date_created: user.dateCreated,
       date_updated: user.dateUpdated,
-      date_deleted: user.dateDeleted,
 		}
 	}
 }

@@ -1,10 +1,9 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 
 interface IError
 {
   message: string;
-  code_error: string;
   errors?: any;
 }
 
@@ -16,16 +15,16 @@ export class AllExceptionFilter implements ExceptionFilter
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<FastifyReply>();
 
-    const status = exception instanceof HttpException
-      ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
+    //const status = exception instanceof HttpException
+    //  ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
 
     const message = exception instanceof HttpException
       ? (exception.getResponse() as IError)
-      : { message: exception.message, code_error: 'UNKNOWN_ERROR' };
+      : { message: exception.message };
 
     const errors = message.errors ?? null; // Extraemos errores si existen.
 
-    const responseData =
+    const responseError =
     {
       code: 'COD_ERR',
       result: {},
@@ -33,9 +32,8 @@ export class AllExceptionFilter implements ExceptionFilter
         message: message.message || 'UNKNOWN_ERROR',
         errors,
       },
-      status: false,
     };
 
-    response.status(status).send(responseData);
+    response.status(200).send(responseError);
   }
 }

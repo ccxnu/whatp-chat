@@ -2,7 +2,7 @@ import { BadRequestException, Body, Controller, HttpCode, Post } from '@nestjs/c
 import { z } from 'zod';
 
 import { EditEnrollmentUseCase } from '@/application/use-cases/enrollment/edit';
-import { ResponseProcess } from '@/core/entities/response';
+import { CreateResponse } from '@/core/entities/response';
 import { UserRoles } from '@/core/repositories/roles';
 import { Roles } from '@/infra/auth/decorator/user-roles.decorator';
 import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';
@@ -25,7 +25,7 @@ export class EditEnrollmentController
 
 	@Post()
 	@HttpCode(201)
-  @Roles(UserRoles.ADMINISTRATOR)
+  @Roles(UserRoles.ADMINISTRADOR)
 	async handle(@Body(bodyValidationPipe) body: CreateBodySchema)
   {
     const { hasAccess, isCompleted, id } = body;
@@ -43,6 +43,6 @@ export class EditEnrollmentController
 			}
 		}
 
-    return new ResponseProcess();
+    return CreateResponse({});
 	}
 }

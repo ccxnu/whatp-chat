@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { AlreadyExistsError } from '@/application/errors/entity-already-exists-error';
 import { CreateEnrollmentUseCase } from '@/application/use-cases/enrollment/create';
-import { ResponseProcess } from '@/core/entities/response';
+import { CreateResponse } from '@/core/entities/response';
 import { IActiveUser } from '@/core/repositories/active-user-data';
 import { ActiveUser } from '@/infra/auth/decorator/active-user.decorator';
 import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';
@@ -47,6 +47,6 @@ export class CreateEnrollmentController
       }
     }
 
-    return new ResponseProcess();
+    return CreateResponse({});
 	}
 }

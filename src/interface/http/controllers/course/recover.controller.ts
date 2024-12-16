@@ -1,7 +1,7 @@
 import { BadRequestException, Controller, HttpCode, Param, ParseUUIDPipe, Post } from '@nestjs/common';
 
 import { RecoverCourseUseCase } from '@/application/use-cases/course/recover';
-import { ResponseProcess } from '@/core/entities/response';
+import { CreateResponse } from '@/core/entities/response';
 import { UserRoles } from '@/core/repositories/roles';
 import { Roles } from '@/infra/auth/decorator/user-roles.decorator';
 
@@ -13,7 +13,7 @@ export class RecoverCourseController
 
 	@Post()
   @HttpCode(200)
-  @Roles(UserRoles.ADMINISTRATOR)
+  @Roles(UserRoles.ADMINISTRADOR)
   async handle(@Param('courseId', ParseUUIDPipe) courseId: string)
   {
 		const result = await this.recoverUseCase.execute({ courseId });
@@ -29,6 +29,6 @@ export class RecoverCourseController
       }
     }
 
-    return new ResponseProcess();
+    return CreateResponse({});
   }
 }

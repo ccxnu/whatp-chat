@@ -9,7 +9,7 @@ import {
 import { z } from 'zod';
 
 import { ForgotPasswordUseCase } from '@/application/use-cases/user/forgot-password';
-import { ResponseProcess } from '@/core/entities/response';
+import { CreateResponse } from '@/core/entities/response';
 import { Public } from '@/infra/auth/decorator/public.decorator';
 import { UserAgent } from '@/infra/auth/decorator/user-agent.decorator';
 import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';
@@ -57,6 +57,6 @@ export class ForgotPasswordController
 			}
 		}
 
-    return new ResponseProcess();
+    return CreateResponse({});
 	}
 }

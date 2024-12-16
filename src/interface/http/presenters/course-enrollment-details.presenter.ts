@@ -10,7 +10,7 @@ export class CourseEnrollmentDetailsPresenter
       isCompleted: details.isCompleted,
       dateCreated: details.dateCreated,
       dateUpdated: details.dateUpdated,
-      course: {
+      course: !details.course ? null : {
         courseId: details.course.courseId.toString(),
         name: details.course.name,
         category: details.course.category,

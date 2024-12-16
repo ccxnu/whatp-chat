@@ -11,7 +11,7 @@ import { z } from 'zod';
 
 import { UserAlreadyExistsError } from '@/application/errors/user-already-exists-error';
 import { RegisterAdminUseCase } from '@/application/use-cases/administrator/register';
-import { ResponseProcess } from '@/core/entities/response';
+import { CreateResponse } from '@/core/entities/response';
 import { UserGenders } from '@/core/repositories/genders';
 import { UserRoles } from '@/core/repositories/roles';
 import { UserAgent } from '@/infra/auth/decorator/user-agent.decorator';
@@ -19,15 +19,13 @@ import { Roles } from '@/infra/auth/decorator/user-roles.decorator';
 import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';
 
 const createAccountBodySchema = z.object({
-	firstNames: z.string(),
-	lastNames: z.string(),
-  username: z.string().min(5).max(50),
+	fullName: z.string(),
 	password: z.string().min(8).max(60),
 	email: z.string().email(),
   cedula: z.string().length(10),
 	phone: z.string(),
   gender: z.nativeEnum(UserGenders),
-  birthDate: z.coerce.date(),
+  dateOfBirth: z.coerce.date(),
   role: z.nativeEnum(UserRoles),
 })
 
@@ -42,7 +40,7 @@ export class RegisterAdminAccountController
 
 	@Post()
 	@HttpCode(201)
-  @Roles(UserRoles.ADMINISTRATOR)
+  @Roles(UserRoles.ADMINISTRADOR)
 	async handle(
     @Body(bodyValidationPipe) body: CreateAccountBodySchema,
     @Ip() ip: string,
@@ -50,28 +48,24 @@ export class RegisterAdminAccountController
   )
   {
 		const {
-      firstNames,
-      lastNames,
-      username,
+      fullName,
       password,
       email,
       cedula,
       phone,
       gender,
-      birthDate,
+      dateOfBirth,
       role,
     } = body;
 
 		const result = await this.registerUseCase.execute({
-      firstNames,
-      lastNames,
-      username,
+      fullName,
       password,
       email,
       cedula,
       phone,
       gender,
-      birthDate,
+      dateOfBirth,
       role,
       ip,
       userAgent
@@ -90,6 +84,6 @@ export class RegisterAdminAccountController
 			}
 		}
 
-    return new ResponseProcess();
+    return CreateResponse({});
 	}
 }

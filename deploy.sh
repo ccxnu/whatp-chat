@@ -5,10 +5,10 @@ cd "$(dirname "$0")"
 echo 'Inicio'
 
 # Variables
-NAME_CONTAINER="app-denver-ists"
-NAME_IMAGE="app-denver-ists"
+NAME_CONTAINER="ragchat-ists"
+NAME_IMAGE="ragchat-ists"
 PORT_EXPOSE=8048
-ENV_FILE="/CONFIG/VARIABLES_ENTORNO/denver-ists/.env"
+ENV_FILE="/CONFIG/VARIABLES_ENTORNO/ragchat-ists/.env"
 NETWORK="database"
 
 docker build --target production -t "$NAME_IMAGE" -f Dockerfile .

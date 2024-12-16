@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { AlreadyExistsError } from '@/application/errors/entity-already-exists-error';
 import { CreateCourseUseCase } from '@/application/use-cases/course/create';
-import { ResponseProcess } from '@/core/entities/response';
+import { CreateResponse } from '@/core/entities/response';
 import { CourseLevel } from '@/core/repositories/course-level';
 import { CourseModality } from '@/core/repositories/course-modalidad';
 import { UserRoles } from '@/core/repositories/roles';
@@ -35,7 +35,7 @@ export class CreateCourseController
 
 	@Post()
 	@HttpCode(201)
-	@Roles(UserRoles.ADMINISTRATOR)
+	@Roles(UserRoles.ADMINISTRADOR)
 	async handle(@Body(bodyValidationPipe) body: CreateCourseBodySchema)
   {
     const {
@@ -77,6 +77,6 @@ export class CreateCourseController
       }
     }
 
-    return new ResponseProcess();
+    return CreateResponse({});
 	}
 }

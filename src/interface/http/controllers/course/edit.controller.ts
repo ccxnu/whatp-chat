@@ -8,7 +8,7 @@ import {
 import { z } from 'zod';
 
 import { EditCourseUseCase } from '@/application/use-cases/course/edit';
-import { ResponseProcess } from '@/core/entities/response';
+import { CreateResponse } from '@/core/entities/response';
 import { CourseLevel } from '@/core/repositories/course-level';
 import { CourseModality } from '@/core/repositories/course-modalidad';
 import { UserRoles } from '@/core/repositories/roles';
@@ -40,7 +40,7 @@ export class EditCourseController
 
 	@Post()
 	@HttpCode(200)
-  @Roles(UserRoles.ADMINISTRATOR)
+  @Roles(UserRoles.ADMINISTRADOR)
 	async handle(@Body(bodyValidationPipe) body: EditAccountBodySchema)
   {
 		const {
@@ -82,6 +82,6 @@ export class EditCourseController
 			}
 		}
 
-    return new ResponseProcess();
+    return CreateResponse({});
 	}
 }

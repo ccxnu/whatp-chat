@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { InvalidQueryLengthError } from '@/application/errors/invalid-query-length-error';
 import { FacturationRepository, FindManyByFiltersParams } from '@/application/repositories/facturation.repository';
-import { Either, left, right } from '@/core/either';
+import { Either, right } from '@/core/either';
 import { PaginationData } from '@/core/repositories/pagination-data';
 import { Facturation } from '@/domain/entities/facturation';
 
@@ -28,10 +28,10 @@ export class SearchByFilterFacturationUseCase
     perPage,
   }: UseCaseRequest): Promise<UseCaseResponse>
   {
-		if (provincia.length < 2 || canton.length < 2)
-		  {
-			return left(new InvalidQueryLengthError(2))
-		}
+		//if (provincia.length < 2 || canton.length < 2)
+		//{
+		//	return left(new InvalidQueryLengthError(2))
+		//}
 
 		const result = await this.facturationRepository.findManyByFilters({
       provincia,

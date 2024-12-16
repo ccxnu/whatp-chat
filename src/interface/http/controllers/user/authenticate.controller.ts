@@ -1,27 +1,11 @@
-import {
-	BadRequestException,
-	Body,
-	Controller,
-	HttpCode,
-	Post,
-	UnauthorizedException,
-} from '@nestjs/common';
-import { z } from 'zod';
+import { TypedBody, TypedRoute } from '@nestia/core';
+import { BadRequestException, Controller, HttpCode, UnauthorizedException } from '@nestjs/common';
 
 import { InvalidCredentialsError } from '@/application/errors/invalid-credentials-error';
-import { AuthenticateUserUseCase } from '@/application/use-cases/user/authenticate';
-import { ResponseProcess } from '@/core/entities/response';
+import { AuthenticateUserUseCase, UseCaseRequest } from '@/application/use-cases/user/authenticate';
+import { CreateResponse } from '@/core/entities/response';
 import { Public } from '@/infra/auth/decorator/public.decorator';
-import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';
 
-
-const authenticateBodySchema = z.object({
-	username: z.string(),
-	password: z.string(),
-})
-
-type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
-const bodyValidationPipe = new ZodValidationPipe(authenticateBodySchema)
 
 @Public()
 @Controller('/authenticate/sign-in')
@@ -30,16 +14,19 @@ export class AuthenticateUserController
 	constructor(private readonly authenticateUseCase: AuthenticateUserUseCase)
   {}
 
-	@Post()
+  /**
+   * @summary 20241216 - Login with email and password
+   *
+   * @tag auth
+   * @param email string
+   * @param password string
+   * @returns An encrypted token, containing a value to decode and use.
+   */
 	@HttpCode(200)
-	async handle(@Body(bodyValidationPipe) body: AuthenticateBodySchema)
+  @TypedRoute.Post()
+	async handle(@TypedBody() body: UseCaseRequest)
   {
-		const { username, password } = body
-
-		const response = await this.authenticateUseCase.execute({
-			username,
-			password,
-		})
+		const response = await this.authenticateUseCase.execute(body);
 
 		if (response.isLeft())
     {
@@ -54,8 +41,8 @@ export class AuthenticateUserController
 			}
 		}
 
-    const { user } = response.value;
+    const { accessToken } = response.value;
 
-    return new ResponseProcess({ user });
+    return CreateResponse({ accessToken });
 	}
 }

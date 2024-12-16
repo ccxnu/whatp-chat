@@ -70,6 +70,7 @@ export class KyselyEnrollmentRepository implements EnrollmentRepository
     const { userId, courseId, hasAccess, isCompleted, page, perPage } = props;
 
     const skip = (page - 1) * perPage;
+    let totalCount: number = 0;
 
     let builder = this.database
       .selectFrom('enrollment')
@@ -96,9 +97,18 @@ export class KyselyEnrollmentRepository implements EnrollmentRepository
       builder = builder.where('is_completed', '=', isCompleted);
     }
 
-    const { count } = await builder
+    const count = await builder
       .select((op) => op.fn.countAll<number>().as("count"))
       .executeTakeFirst();
+
+    if (!count)
+    {
+      totalCount = 0;
+    }
+    else
+    {
+      totalCount = count.count;
+    }
 
     const result = await builder
       .limit(perPage)
@@ -110,8 +120,7 @@ export class KyselyEnrollmentRepository implements EnrollmentRepository
         "enrollment.date_created",
         "enrollment.date_updated",
         "user.id as user_id",
-        "user.first_names",
-        "user.last_names",
+        "user.full_name",
         "user.cedula",
         "user.email",
         "course.id as course_id",
@@ -128,8 +137,8 @@ export class KyselyEnrollmentRepository implements EnrollmentRepository
 				return KyselyEnrollmentDetailsMapper.toDomain(item);
 			}),
 			perPage,
-			totalPages: Math.ceil(count / perPage),
-			totalItems: count,
+			totalPages: Math.ceil(totalCount / perPage),
+			totalItems: totalCount,
 		}
 
   }

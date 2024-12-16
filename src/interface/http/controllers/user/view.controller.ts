@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 
 import { ViewUserUseCase } from '@/application/use-cases/user/view';
-import { ResponseProcess } from '@/core/entities/response';
+import { CreateResponse } from '@/core/entities/response';
 import { IActiveUser } from '@/core/repositories/active-user-data';
 import { ActiveUser } from '@/infra/auth/decorator/active-user.decorator';
 import { UserDetailsPresenter } from '@/interface/http/presenters/user-details.presenter';
@@ -39,6 +39,6 @@ export class ViewUserAccountController
 			}
 		}
 
-		return new ResponseProcess(UserDetailsPresenter.toHttp(result.value.user));
+		return CreateResponse(UserDetailsPresenter.toHttp(result.value.user));
 	}
 }

@@ -4,7 +4,6 @@ import { MinQuerySearchNotProviedError } from '@/application/errors/expected-one
 import { FindManyByFiltersParams, UserRepository } from '@/application/repositories/user.repository';
 import { Either, right } from '@/core/either';
 import { PaginationData } from '@/core/repositories/pagination-data';
-import { UserRoles } from '@/core/repositories/roles';
 import { UserDetails } from '@/domain/value-objects/user-details';
 
 interface FetchUserUseCaseRequest extends FindManyByFiltersParams
@@ -21,27 +20,9 @@ export class FetchUserUseCase
 	constructor(private userRepository: UserRepository)
   {}
 
-	async execute({
-    hasDisability,
-    educationLevel,
-    participation,
-    jobPosition,
-		deleted = false,
-    role = UserRoles.ESTUDIANTE,
-		page,
-		perPage,
-	}: FetchUserUseCaseRequest): Promise<FetchUserUseCaseResponse>
+	async execute({ ...props }: FetchUserUseCaseRequest): Promise<FetchUserUseCaseResponse>
   {
-		const result = await this.userRepository.findManyByFilters({
-      hasDisability,
-      educationLevel,
-      participation,
-      jobPosition,
-      role,
-			deleted,
-			page,
-			perPage,
-		})
+		const result = await this.userRepository.findManyByFilters({ ...props })
 
 		return right(result)
 	}

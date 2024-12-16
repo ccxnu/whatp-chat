@@ -60,8 +60,7 @@ export class KyselyCertificateRepository implements CertificateRepository
       .where('user.cedula', '=', cedula)
       .select([
         "certificate.id",
-        "user.first_names",
-        "user.last_names",
+        "user.full_name",
         "certificate.date_created",
         "course.name as course_name",
         "course.startDate as course_date_started",
@@ -87,8 +86,7 @@ export class KyselyCertificateRepository implements CertificateRepository
       .where('certificate.id', '=', id)
       .select([
         "certificate.id",
-        "user.first_names",
-        "user.last_names",
+        "user.full_name",
         "certificate.date_created",
         "course.name as course_name",
         "course.startDate as course_date_started",

@@ -23,7 +23,7 @@ export class SearchByFilterEnrollmenteController
 
 	@Get()
 	@HttpCode(200)
-  @Roles(UserRoles.ADMINISTRATOR)
+  @Roles(UserRoles.ADMINISTRADOR)
 	async handle(
 		@Query('userId') userId: string,
 		@Query('courseId') courseId: string,

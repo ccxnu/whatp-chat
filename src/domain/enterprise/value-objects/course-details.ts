@@ -15,8 +15,8 @@ export interface CourseDetailsProps
   modality: CourseModality;
 
   startDate: Date;
-  isPopular: boolean;
-  tags: string[];
+  isPopular: boolean | null;
+  tags: string[] | null;
 }
 
 export class CourseDetails extends ValueObject<CourseDetailsProps>

@@ -35,6 +35,11 @@ export class DownloadCertificateUseCase
 
 		const realCertificate = await this.certificateRepository.findById(id);
 
+    if (!realCertificate)
+    {
+      return left(new ResourceNotFoundError());
+    }
+
     realCertificate.numDownloads += 1;
 
     await this.certificateRepository.edit(realCertificate);

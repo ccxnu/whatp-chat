@@ -1,15 +1,19 @@
-export class ResponseProcess
+export interface ResponseForm<T>
 {
-  public code: string;
-  public result: any;
-  public info: string;
-  public status: boolean;
+  code: 'COD_OK';
+  result: T;
+  info: string;
+  status: true;
+}
 
-  constructor(result?: any)
-  {
-    this.code = "COD_OK";
-    this.result = result ?? {};
-    this.info = "El proceso se realizó con exito";
-    this.status = true;
-  }
+export type Try<T> = ResponseForm<T>;
+
+export function CreateResponse<T>(result: T, info?: string ): Try<T> 
+{
+  return {
+    code: 'COD_OK',
+    result,
+    info: info ?? 'El proceso se realizó con exito',
+    status: true,
+  } as const;
 }
