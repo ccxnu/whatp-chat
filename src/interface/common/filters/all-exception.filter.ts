@@ -32,6 +32,7 @@ export class AllExceptionFilter implements ExceptionFilter
         message: message.message || 'UNKNOWN_ERROR',
         errors,
       },
+      status: false,
     };
 
     response.status(200).send(responseError);

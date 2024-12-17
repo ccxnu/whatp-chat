@@ -1,6 +1,6 @@
 import { Provider } from '@nestjs/common';
-import { MysqlDialect } from 'kysely'
-import { createPool } from 'mysql2'
+import { PostgresDialect } from 'kysely';
+import { Pool } from 'pg';
 
 import { EnvService } from '@/infra/env/env.service';
 
@@ -18,17 +18,23 @@ export const DatabaseProvider: Provider =
     const password = env.get('DATABASE_PASSWORD');
     const database = env.get('DATABASE_NAME');
 
-    const dialect = new MysqlDialect({
-      pool: createPool({
-        database,
-        host,
-        user,
-        password,
-        port,
-        connectionLimit: 10,
-      })
-    })
+    const pool =  new Pool({
+      host,
+      port,
+      user,
+      password,
+      database,
+    });
 
-    return new Database({ dialect });
+    const dialect = new PostgresDialect({ pool });
+    const db = new Database({ dialect });
+
+    // Verifica la conexión a la base de datos
+    // eslint-disable-next-line
+    pool.query(`SELECT 1`, function(err) {
+      if (err) console.error('DATABASE CONNECTION ERROR', err);
+    });
+
+    return db;
   },
 };

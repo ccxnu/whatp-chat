@@ -6,7 +6,7 @@ import { EnvService } from '@/infra/env/env.service';
 import { AppModule } from './app.module';
 import { AllExceptionFilter } from './interface/common/filters/all-exception.filter';
 import { LoggingInterceptor } from './interface/common/interceptors/logger.interceptor';
-import { SwaggerSetting } from './interface/swagger';
+//import { SwaggerSetting } from './interface/swagger';
 
 async function bootstrap()
 {
@@ -33,7 +33,7 @@ async function bootstrap()
   app.setGlobalPrefix(GLOBAL_PREFIX);
 
   // Documentation
-  SwaggerSetting(app);
+  //SwaggerSetting(app);
 
   await app.listen(3000, '0.0.0.0');
 }

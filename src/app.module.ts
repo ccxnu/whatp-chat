@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { AuthModule } from '@/infra/auth/auth.module';
-import { envSchema } from '@/infra/env/env';
+import { validateEnv } from '@/infra/env/env';
 import { HttpModule } from '@/interface/http/http.module';
 
 @Module (
@@ -10,7 +10,7 @@ import { HttpModule } from '@/interface/http/http.module';
     imports:
     [
       ConfigModule.forRoot({
-        validate: (env) => envSchema.parse(env),
+        validate: validateEnv,
         isGlobal: true,
       }),
       AuthModule,

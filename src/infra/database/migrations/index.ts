@@ -1,9 +1,9 @@
 import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
 import { promises as fs } from 'fs';
-import { FileMigrationProvider,Kysely, Migrator, MysqlDialect } from 'kysely';
-import { createPool } from 'mysql2';
+import { FileMigrationProvider,Kysely, Migrator, PostgresDialect } from 'kysely';
 import * as path from 'path';
+import { Pool } from 'pg';
 
 config();
 
@@ -18,15 +18,15 @@ async function migrateToLatest()
   const database = configService.get('DATABASE_NAME');
 
   const db = new Kysely({
-    dialect: new MysqlDialect({
-      pool: createPool({
+    dialect: new PostgresDialect({
+      pool: new Pool({
         host,
         port,
         user,
         password,
         database,
-      })
-    }),
+      }),
+    })
   });
 
   const migrator = new Migrator({
