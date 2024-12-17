@@ -1,6 +1,6 @@
-import { EmailStatus } from "@/core/repositories/email-status";
-import { UserGenders } from "@/core/repositories/genders";
-import { UserRoles } from "@/core/repositories/roles";
+import { EmailStatus } from "@/domain/enums/user-email-status";
+import { UserGenders } from "@/domain/enums/user-gender";
+import { UserRoles } from "@/domain/enums/user-roles";
 
 export interface UserTable
 {

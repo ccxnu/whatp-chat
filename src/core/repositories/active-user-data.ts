@@ -1,4 +1,4 @@
-import { UserRoles } from "./roles";
+import { UserRoles } from "@/domain/enums/user-roles";
 
 export interface IActiveUser
 {

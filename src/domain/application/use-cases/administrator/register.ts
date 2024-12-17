@@ -7,11 +7,11 @@ import { EmailVerificationRepository } from '@/application/repositories/email-ve
 import { UserRepository } from '@/application/repositories/user.repository';
 import { Either, left, right } from '@/core/either';
 import { RandomNumber } from '@/core/entities/random-number';
-import { EmailStatus } from '@/core/repositories/email-status';
-import { UserGenders } from '@/core/repositories/genders';
-import { UserRoles } from '@/core/repositories/roles';
 import { EmailVerification } from '@/domain/entities/email-verification';
 import { User } from '@/domain/entities/user';
+import { EmailStatus } from '@/domain/enums/user-email-status';
+import { UserGenders } from '@/domain/enums/user-gender';
+import { UserRoles } from '@/domain/enums/user-roles';
 
 
 interface RegisterAdminUseCaseRequest

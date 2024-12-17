@@ -9,7 +9,7 @@ import { z } from 'zod';
 
 import { MinQuerySearchNotProviedError } from '@/application/errors/expected-one-search-param-error';
 import { FetchUserUseCase } from '@/application/use-cases/user/fetch';
-import { UserRoles } from '@/core/repositories/roles';
+import { UserRoles } from '@/domain/enums/user-roles';
 import { Roles } from '@/infra/auth/decorator/user-roles.decorator';
 import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';
 import { UserDetailsPresenter } from '@/interface/http/presenters/user-details.presenter';

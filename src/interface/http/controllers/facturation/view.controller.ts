@@ -9,7 +9,7 @@ import {
 
 import { ViewFacturationUseCase } from '@/application/use-cases/facturation/view';
 import { CreateResponse } from '@/core/entities/response';
-import { UserRoles } from '@/core/repositories/roles';
+import { UserRoles } from '@/domain/enums/user-roles';
 import { Roles } from '@/infra/auth/decorator/user-roles.decorator';
 import { FacturationPresenter } from '@/interface/http/presenters/facturation.presenter';
 

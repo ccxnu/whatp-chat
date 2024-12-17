@@ -8,7 +8,7 @@ import {
 
 import { MinQuerySearchNotProviedError } from '@/application/errors/expected-one-search-param-error';
 import { SearchByFilterEnrollmentUseCase } from '@/application/use-cases/enrollment/search-by-filter';
-import { UserRoles } from '@/core/repositories/roles';
+import { UserRoles } from '@/domain/enums/user-roles';
 import { Roles } from '@/infra/auth/decorator/user-roles.decorator';
 import { ZodValidationBooleanPipe } from '@/interface/http/pipes/zod-validation-boolean.pipe';
 import { ZodValidationPagePipe } from '@/interface/http/pipes/zod-validation-page.pipe';

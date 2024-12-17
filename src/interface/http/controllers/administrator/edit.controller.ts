@@ -11,8 +11,8 @@ import { z } from 'zod';
 import { UserAlreadyExistsError } from '@/application/errors/user-already-exists-error';
 import { EditAdminUseCase } from '@/application/use-cases/administrator/edit';
 import { CreateResponse } from '@/core/entities/response';
-import { UserGenders } from '@/core/repositories/genders';
-import { UserRoles } from '@/core/repositories/roles';
+import { UserGenders } from '@/domain/enums/user-gender';
+import { UserRoles } from '@/domain/enums/user-roles';
 import { Roles } from '@/infra/auth/decorator/user-roles.decorator';
 
 import { ZodValidationPipe } from '../../pipes/zod-validation.pipe';

@@ -12,7 +12,7 @@ import { z } from 'zod';
 import { UserAlreadyExistsError } from '@/application/errors/user-already-exists-error';
 import { RegisterUserUseCase } from '@/application/use-cases/user/register';
 import { CreateResponse } from '@/core/entities/response';
-import { UserGenders } from '@/core/repositories/genders';
+import { UserGenders } from '@/domain/enums/user-gender';
 import { Public } from '@/infra/auth/decorator/public.decorator';
 import { UserAgent } from '@/infra/auth/decorator/user-agent.decorator';
 import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';

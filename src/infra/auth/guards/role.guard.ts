@@ -3,7 +3,7 @@ import { Reflector } from "@nestjs/core";
 import { Observable } from "rxjs";
 
 import { IActiveUser } from "@/core/repositories/active-user-data";
-import { UserRoles } from "@/core/repositories/roles";
+import { UserRoles } from "@/domain/enums/user-roles";
 
 import { REQUEST_USER_KEY } from "../constants";
 import { ROLES_KEY } from "../decorator/user-roles.decorator";

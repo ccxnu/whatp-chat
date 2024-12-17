@@ -8,7 +8,7 @@ import {
 
 import { InvalidQueryLengthError } from '@/application/errors/invalid-query-length-error';
 import { SearchUserUseCase } from '@/application/use-cases/user/search';
-import { UserRoles } from '@/core/repositories/roles';
+import { UserRoles } from '@/domain/enums/user-roles';
 import { Roles } from '@/infra/auth/decorator/user-roles.decorator';
 import { ZodValidationLimitPipe } from '@/interface/http/pipes/zod-validation-limit.pipe';
 import { ZodValidationQueryPipe } from '@/interface/http/pipes/zod-validation-query.pipe';

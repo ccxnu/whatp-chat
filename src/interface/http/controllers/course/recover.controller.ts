@@ -2,7 +2,7 @@ import { BadRequestException, Controller, HttpCode, Param, ParseUUIDPipe, Post }
 
 import { RecoverCourseUseCase } from '@/application/use-cases/course/recover';
 import { CreateResponse } from '@/core/entities/response';
-import { UserRoles } from '@/core/repositories/roles';
+import { UserRoles } from '@/domain/enums/user-roles';
 import { Roles } from '@/infra/auth/decorator/user-roles.decorator';
 
 @Controller('/course/:courseId/recover')

@@ -1,8 +1,8 @@
 import { PaginationData } from '@/core/repositories/pagination-data';
 import { PaginationParams } from '@/core/repositories/pagination-params';
 import { QueryDataLimitParams } from '@/core/repositories/query-data-limit';
-import { UserRoles } from '@/core/repositories/roles';
 import { User } from '@/domain/entities/user';
+import { UserRoles } from '@/domain/enums/user-roles';
 import { UserDetails } from '@/domain/value-objects/user-details';
 
 export type FindManyByFiltersParams = PaginationParams & {

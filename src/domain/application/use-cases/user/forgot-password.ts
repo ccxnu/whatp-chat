@@ -6,7 +6,7 @@ import { MailerRepository } from '@/application/mailer/mailer';
 import { UserRepository } from '@/application/repositories/user.repository';
 import { Either, left, right } from '@/core/either';
 import { RandomPassword } from '@/core/entities/random-value';
-import { EmailStatus } from '@/core/repositories/email-status';
+import { EmailStatus } from '@/domain/enums/user-email-status';
 
 interface ForgotPasswordUseCaseRequest
 {

@@ -11,7 +11,7 @@ import { EditCourseUseCase } from '@/application/use-cases/course/edit';
 import { CreateResponse } from '@/core/entities/response';
 import { CourseLevel } from '@/core/repositories/course-level';
 import { CourseModality } from '@/core/repositories/course-modalidad';
-import { UserRoles } from '@/core/repositories/roles';
+import { UserRoles } from '@/domain/enums/user-roles';
 import { Roles } from '@/infra/auth/decorator/user-roles.decorator';
 import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';
 

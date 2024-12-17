@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { UserRepository } from '@/application/repositories/user.repository';
 import { Either, left, right } from '@/core/either';
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error';
-import { UserGenders } from '@/core/repositories/genders';
+import { UserGenders } from '@/domain/enums/user-gender';
 
 
 interface EditUserUseCaseRequest

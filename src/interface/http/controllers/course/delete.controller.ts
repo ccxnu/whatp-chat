@@ -2,7 +2,7 @@ import { BadRequestException, Controller, HttpCode, Param, ParseUUIDPipe, Post }
 
 import { DeleteCourseUseCase } from '@/application/use-cases/course/delete';
 import { CreateResponse } from '@/core/entities/response';
-import { UserRoles } from '@/core/repositories/roles';
+import { UserRoles } from '@/domain/enums/user-roles';
 import { Roles } from '@/infra/auth/decorator/user-roles.decorator';
 
 @Controller('/course/:courseId/delete')

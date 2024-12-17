@@ -9,7 +9,7 @@ import {
 
 import { RecoverUserUseCase } from '@/application/use-cases/user/recover';
 import { CreateResponse } from '@/core/entities/response';
-import { UserRoles } from '@/core/repositories/roles';
+import { UserRoles } from '@/domain/enums/user-roles';
 import { Roles } from '@/infra/auth/decorator/user-roles.decorator';
 
 

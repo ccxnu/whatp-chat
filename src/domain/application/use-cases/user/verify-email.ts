@@ -5,7 +5,7 @@ import { EmailVerificationRepository } from '@/application/repositories/email-ve
 import { UserRepository } from '@/application/repositories/user.repository';
 import { Either, left, right } from '@/core/either';
 import { DateFormat } from '@/core/entities/date';
-import { EmailStatus } from '@/core/repositories/email-status';
+import { EmailStatus } from '@/domain/enums/user-email-status';
 
 interface VerifyEmailUseCaseRequest
 {

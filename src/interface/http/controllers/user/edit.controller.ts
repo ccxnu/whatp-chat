@@ -12,7 +12,7 @@ import { UserAlreadyExistsError } from '@/application/errors/user-already-exists
 import { EditUserUseCase } from '@/application/use-cases/user/edit';
 import { CreateResponse } from '@/core/entities/response';
 import { IActiveUser } from '@/core/repositories/active-user-data';
-import { UserGenders } from '@/core/repositories/genders';
+import { UserGenders } from '@/domain/enums/user-gender';
 import { ActiveUser } from '@/infra/auth/decorator/active-user.decorator';
 import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';
 

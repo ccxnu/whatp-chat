@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
 import { EmailVerificationRepository } from '@/application/repositories/email-verification.repository';
-import { EmailStatus } from '@/core/repositories/email-status';
 import { EmailVerification } from '@/domain/entities/email-verification';
 import { User } from '@/domain/entities/user';
+import { EmailStatus } from '@/domain/enums/user-email-status';
 import { Database } from '@/infra/database/kysely/database';
 
 import { KyselyEmailVerificationMapper } from '../mappers/kysely-email-verification.mapper';
