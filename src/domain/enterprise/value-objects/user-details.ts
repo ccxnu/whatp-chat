@@ -9,8 +9,7 @@ export interface UserDetailsProps
 	role: UserRoles;
   cedula: string;
 	email: string;
-	firstNames: string;
-	lastNames: string;
+	fullName: string;
   phone: string;
 	gender: UserGenders;
 	birthDate: Date;
@@ -30,14 +29,9 @@ export class UserDetails extends ValueObject<UserDetailsProps>
 		return this.props.role;
 	}
 
-	get firstNames()
+	get fullName()
   {
-		return this.props.firstNames;
-	}
-
-	get lastNames()
-  {
-		return this.props.lastNames;
+		return this.props.fullName;
 	}
 
 	get cedula()

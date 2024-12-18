@@ -13,7 +13,7 @@ async function bootstrap()
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
-    { logger: ['error', 'warn'] }
+    //{ logger: ['error', 'warn'] }
   );
 
   // Env constants
@@ -36,6 +36,7 @@ async function bootstrap()
   //SwaggerSetting(app);
 
   await app.listen(3000, '0.0.0.0');
+  console.info(`Service running on port 3000 ^~^`);
 }
 
 bootstrap();

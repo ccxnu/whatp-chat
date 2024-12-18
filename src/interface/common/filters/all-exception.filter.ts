@@ -5,6 +5,7 @@ interface IError
 {
   message: string;
   errors?: any;
+  reason?: any;
 }
 
 @Catch()
@@ -22,7 +23,7 @@ export class AllExceptionFilter implements ExceptionFilter
       ? (exception.getResponse() as IError)
       : { message: exception.message };
 
-    const errors = message.errors ?? null; // Extraemos errores si existen.
+    const errors = message.errors ?? message.reason ?? null; // Extraemos errores si existen.
 
     const responseError =
     {

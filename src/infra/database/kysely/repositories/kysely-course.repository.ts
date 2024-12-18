@@ -131,7 +131,7 @@ export class KyselyCourseRepository implements CourseRepository
 
   async findManyByQuery(params: QueryDataLimitParams): Promise<CourseDetails[]>
   {
-    const { query, limit } = params;
+    const { query, perPage } = params;
 
     const courses = await this.database
       .selectFrom('course')
@@ -139,7 +139,7 @@ export class KyselyCourseRepository implements CourseRepository
       .select(sql`MATCH(name, description) AGAINST (${query} IN NATURAL LANGUAGE MODE)`.as('relevance'))
       .where('date_deleted', 'is', null)
       .orderBy('relevance', 'desc')
-      .limit(limit)
+      .limit(perPage)
       .execute();
 
 		return courses.map((item) =>

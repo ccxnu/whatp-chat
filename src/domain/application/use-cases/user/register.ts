@@ -21,7 +21,7 @@ interface RegisterUserUseCaseRequest
 	password: string;
   phone: string;
 	gender: UserGenders;
-	dateOfBirth: Date;
+	dateOfBirth: string;
   city: string;
   ip: string;
   userAgent: string;
@@ -87,7 +87,7 @@ export class RegisterUserUseCase
 			cedula: academicokUser.cedula,
 			phone,
 			gender,
-      dateOfBirth,
+      dateOfBirth: new Date(dateOfBirth),
 			role: academicokUser.role,
       emailStatus: EmailStatus.NOT_VERIFIED,
 		})

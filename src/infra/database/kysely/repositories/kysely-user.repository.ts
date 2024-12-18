@@ -19,7 +19,7 @@ export class KyselyUserRepository implements UserRepository
   async findById(id: string): Promise<User | null>
   {
     const user = await this.database
-      .selectFrom('user')
+      .selectFrom('users')
       .where('id', '=', id)
       .selectAll()
       .executeTakeFirst();
@@ -32,7 +32,7 @@ export class KyselyUserRepository implements UserRepository
   async findByIdOnDeleted(id: string): Promise<User | null>
   {
     const user = await this.database
-      .selectFrom('user')
+      .selectFrom('users')
       .where('id', '=', id)
       .selectAll()
       .executeTakeFirst();
@@ -45,9 +45,9 @@ export class KyselyUserRepository implements UserRepository
   async findByIdWithDetails(id: string): Promise<UserDetails | null>
   {
     const user = await this.database
-      .selectFrom('user')
-      .where('user.id', '=', id)
-      .selectAll('user')
+      .selectFrom('users')
+      .where('users.id', '=', id)
+      .selectAll('users')
       .executeTakeFirst();
 
       console.log(user)
@@ -60,7 +60,7 @@ export class KyselyUserRepository implements UserRepository
   async findByEmail(email: string): Promise<User | null>
   {
     const user = await this.database
-      .selectFrom('user')
+      .selectFrom('users')
       .where('email', '=', email)
       .selectAll()
       .executeTakeFirst();
@@ -73,7 +73,7 @@ export class KyselyUserRepository implements UserRepository
   async findByCedula(cedula: string): Promise<User | null>
   {
     const user = await this.database
-      .selectFrom('user')
+      .selectFrom('users')
       .where('cedula', '=', cedula)
       .selectAll()
       .executeTakeFirst();
@@ -87,7 +87,7 @@ export class KyselyUserRepository implements UserRepository
   async findByUnique(unique: string): Promise<User | null>
   {
     const user = await this.database
-      .selectFrom('user')
+      .selectFrom('users')
       .where((op) => op.or([
         op('cedula', '=', unique),
         op('email', '=', unique),
@@ -102,26 +102,23 @@ export class KyselyUserRepository implements UserRepository
 
   async findManyByFilters(props: FindManyByFiltersParams): Promise<PaginationData<UserDetails[]>>
   {
-    const {
-      role,
-      page,
-      perPage
-    } = props;
+    const { role, page, perPage } = props;
 
     const skip = (page - 1) * perPage;
 
     let builder = this.database
-      .selectFrom('user')
+      .selectFrom('users')
 
     if (role)
     {
       builder = builder.where('role', '=', role)
     }
 
-
-    const { countResult }: any = await builder
-      .select((op) => op.fn.countAll<number>().as("countResult"))
+    const count = await builder
+      .select((op) => op.fn.countAll<number>().as("total"))
       .executeTakeFirst();
+
+    const totalItems: number = count?.total ? Number(count.total) : 0;
 
     const people = await builder
       .limit(perPage)
@@ -130,28 +127,24 @@ export class KyselyUserRepository implements UserRepository
       .execute();
 
 		return {
-			data: people.map((item) =>
-      {
-				return KyselyUserDetailsMapper.toDomain(item);
-			}),
+			data: people.map((item) => KyselyUserDetailsMapper.toDomain(item)),
 			perPage,
-			totalPages: Math.ceil(countResult / perPage),
-			totalItems: countResult,
+			totalItems,
+			totalPages: Math.ceil(totalItems / perPage),
 		}
-
   }
 
   async findManyBySearchQueries(params: QueryDataLimitParams): Promise<UserDetails[]>
   {
-    const { query, limit } = params;
+    const { query, perPage } = params;
 
     const people = await this.database
-      .selectFrom('user')
+      .selectFrom('users')
       .where((op) => op.or([
         op('full_name', 'like', `%${query}%`),
         op('cedula', 'like', `%${query}%`),
       ]))
-      .limit(limit)
+      .limit(perPage)
       .selectAll()
       .execute();
 
@@ -166,7 +159,7 @@ export class KyselyUserRepository implements UserRepository
 		const data = KyselyUserMapper.toKysely(person);
 
     await this.database
-      .insertInto('user')
+      .insertInto('users')
       .values({ ...data })
       .executeTakeFirstOrThrow()
 	}
@@ -178,7 +171,7 @@ export class KyselyUserRepository implements UserRepository
 		const { id, ...data } = KyselyUserMapper.toKysely(person);
 
 		await this.database
-      .updateTable('user')
+      .updateTable('users')
       .set({ ...data })
       .where('id', '=', id)
       .executeTakeFirst();
@@ -191,7 +184,7 @@ export class KyselyUserRepository implements UserRepository
 		const { id, password, date_updated } = KyselyUserMapper.toKysely(person);
 
 		await this.database
-      .updateTable('user')
+      .updateTable('users')
       .set({ password, date_updated })
       .where('id', '=', id)
       .executeTakeFirst();
@@ -202,7 +195,7 @@ export class KyselyUserRepository implements UserRepository
 		const { id } = KyselyUserMapper.toKysely(person);
 
 		await this.database
-      .deleteFrom('user')
+      .deleteFrom('users')
       .where('id', '=', id)
       .executeTakeFirst();
 	}
@@ -213,7 +206,7 @@ export class KyselyUserRepository implements UserRepository
 		const { id } = KyselyUserMapper.toKysely(person);
 
 		await this.database
-      .deleteFrom('user')
+      .deleteFrom('users')
       .where('id', '=', id)
       .executeTakeFirst();
 	}

@@ -1,12 +1,6 @@
-import {
-	BadRequestException,
-	Body,
-	ConflictException,
-	Controller,
-	HttpCode,
-	Post,
-} from '@nestjs/common';
-import { z } from 'zod';
+import { TypedBody, TypedRoute } from '@nestia/core';
+import { BadRequestException, ConflictException, Controller, HttpCode } from '@nestjs/common';
+import { tags } from 'typia';
 
 import { UserAlreadyExistsError } from '@/application/errors/user-already-exists-error';
 import { EditUserUseCase } from '@/application/use-cases/user/edit';
@@ -14,18 +8,13 @@ import { CreateResponse } from '@/core/entities/response';
 import { IActiveUser } from '@/core/repositories/active-user-data';
 import { UserGenders } from '@/domain/enums/user-gender';
 import { ActiveUser } from '@/infra/auth/decorator/active-user.decorator';
-import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';
 
-const schema = z.object({
-	fullName: z.string().optional(),
-  username: z.string().optional(),
-	phone: z.string().optional(),
-  gender: z.nativeEnum(UserGenders).optional(),
-  dateOfBirth: z.coerce.date().optional(),
-})
-
-type EditBodySchema = z.infer<typeof schema>;
-const bodyValidationPipe = new ZodValidationPipe(schema);
+interface EditUserDto
+{
+  phone: (string & tags.Pattern<"^[0-9]+$"> & tags.MinLength<10> & tags.MaxLength<13>) | null;
+  gender: UserGenders | null;
+  dateOfBirth: (string & tags.Format<"date">) | null;
+}
 
 @Controller('/user/edit-account')
 export class EditUserAccountController
@@ -33,16 +22,28 @@ export class EditUserAccountController
 	constructor(private editUseCase: EditUserUseCase)
   {}
 
-	@Post()
+  /**
+   * @summary 20241216 - Edit user info
+   *
+   * @tag user
+   * @param EditUserDto
+   * @returns
+   */
 	@HttpCode(200)
-	async handle(
-    @Body(bodyValidationPipe) body: EditBodySchema,
-    @ActiveUser() user: IActiveUser
-  )
+  @TypedRoute.Post()
+	async handle(@TypedBody() body: EditUserDto, @ActiveUser() user: IActiveUser)
   {
     const { sub } = user;
+    const { phone, gender, dateOfBirth } = body;
 
-		const result = await this.editUseCase.execute({ userId: sub, ...body });
+    console.log(body)
+
+		const result = await this.editUseCase.execute({
+      userId: sub,
+      phone,
+      gender,
+      dateOfBirth,
+    });
 
 		if (result.isLeft())
     {

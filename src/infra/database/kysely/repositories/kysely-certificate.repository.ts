@@ -55,12 +55,12 @@ export class KyselyCertificateRepository implements CertificateRepository
     const enrollment = await this.database
       .selectFrom('certificate')
       .innerJoin('enrollment', 'enrollment.id', 'certificate.enrollment_id')
-      .innerJoin('user', 'user.id', 'enrollment.user_id')
+      .innerJoin('users', 'users.id', 'enrollment.user_id')
       .innerJoin('course', 'course.id', 'enrollment.course_id')
-      .where('user.cedula', '=', cedula)
+      .where('users.cedula', '=', cedula)
       .select([
         "certificate.id",
-        "user.full_name",
+        "users.full_name",
         "certificate.date_created",
         "course.name as course_name",
         "course.startDate as course_date_started",
@@ -81,12 +81,12 @@ export class KyselyCertificateRepository implements CertificateRepository
     const enrollment = await this.database
       .selectFrom('certificate')
       .innerJoin('enrollment', 'enrollment.id', 'certificate.enrollment_id')
-      .innerJoin('user', 'user.id', 'enrollment.user_id')
+      .innerJoin('users', 'users.id', 'enrollment.user_id')
       .innerJoin('course', 'course.id', 'enrollment.course_id')
       .where('certificate.id', '=', id)
       .select([
         "certificate.id",
-        "user.full_name",
+        "users.full_name",
         "certificate.date_created",
         "course.name as course_name",
         "course.startDate as course_date_started",

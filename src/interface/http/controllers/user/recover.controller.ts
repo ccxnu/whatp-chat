@@ -1,11 +1,6 @@
-import {
-	BadRequestException,
-	Controller,
-	HttpCode,
-	Param,
-	ParseUUIDPipe,
-  Post,
-} from '@nestjs/common';
+import { TypedParam, TypedRoute } from '@nestia/core';
+import { BadRequestException, Controller, HttpCode } from '@nestjs/common';
+import { tags } from 'typia';
 
 import { RecoverUserUseCase } from '@/application/use-cases/user/recover';
 import { CreateResponse } from '@/core/entities/response';
@@ -19,14 +14,12 @@ export class RecoverUserAccountController
 	constructor(private readonly recoverUseCase: RecoverUserUseCase)
   {}
 
-	@Post()
-	@HttpCode(200)
 	@Roles(UserRoles.ADMINISTRADOR)
-	async handle(@Param('userId', ParseUUIDPipe) id: string)
+	@HttpCode(200)
+  @TypedRoute.Post()
+	async handle(@TypedParam('userId') userId: string & tags.Format<'uuid'>)
   {
-		const result = await this.recoverUseCase.execute({
-			userId: id,
-		})
+		const result = await this.recoverUseCase.execute({ userId })
 
 		if (result.isLeft())
     {

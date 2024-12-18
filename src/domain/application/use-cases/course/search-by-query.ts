@@ -8,7 +8,7 @@ import { CourseDetails } from '@/domain/value-objects/course-details';
 interface SearchByQueryCourseRequest
 {
 	query: string;
-	limit: number;
+	perPage: number;
 }
 
 type SearchByQueryCourseResponse = Either<
@@ -26,17 +26,18 @@ export class SearchByQueryCourseUseCase
 
 	async execute({
     query,
-    limit
+    perPage
   }: SearchByQueryCourseRequest): Promise<SearchByQueryCourseResponse>
   {
-		if (query.length < 2)
+		if (query && query.length < 2)
 		  {
 			return left(new InvalidQueryLengthError(2))
 		}
 
 		const courses = await this.courseRepository.findManyByQuery({
       query,
-      limit
+      perPage,
+      page: 1,
 		})
 
 		return right({ courses })

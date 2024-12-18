@@ -9,10 +9,9 @@ import { UserGenders } from '@/domain/enums/user-gender';
 interface EditUserUseCaseRequest
 {
 	userId: string;
-	fullName?: string;
-	phone?: string;
-  gender?: UserGenders;
-  birthDate?: Date;
+	phone: null | string;
+  gender: null | UserGenders;
+  dateOfBirth: null | string;
 }
 
 type EditUserUseCaseResponse = Either<ResourceNotFoundError, object>
@@ -25,10 +24,9 @@ export class EditUserUseCase
 
 	async execute({
 		userId,
-		fullName,
 		phone,
     gender,
-    birthDate,
+    dateOfBirth,
 	}: EditUserUseCaseRequest): Promise<EditUserUseCaseResponse>
   {
 		const user = await this.userRepository.findById(userId);
@@ -38,10 +36,9 @@ export class EditUserUseCase
 			return left(new ResourceNotFoundError());
 		}
 
-		if (fullName) user.fullName = fullName;
 		if (phone) user.phone = phone;
 		if (gender) user.gender = gender;
-		if (birthDate) user.dateOfBirth = birthDate;
+		if (dateOfBirth) user.dateOfBirth = new Date(dateOfBirth);
 
 		await this.userRepository.edit(user);
 

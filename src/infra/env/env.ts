@@ -2,30 +2,30 @@ import typia from 'typia';
 
 export class Env
 {
-    // Global
-    GLOBAL_PREFIX!: string;
-    NODE_ENV!: string;
+  // Global
+  GLOBAL_PREFIX!: string;
+  NODE_ENV!: string;
 
-    // Database
-    DATABASE_USER!: string;
-    DATABASE_PASSWORD!: string;
-    DATABASE_NAME!: string;
-    DATABASE_PORT!: number;
-    DATABASE_HOST!: string;
+  // Database
+  DATABASE_USER!: string;
+  DATABASE_PASSWORD!: string;
+  DATABASE_NAME!: string;
+  DATABASE_PORT!: number;
+  DATABASE_HOST!: string;
 
-    // Redis
-    REDIS_HOST!: string;
-    REDIS_PORT!: number;
-    REDIS_TTL!: number;
-    REDIS_DB!: number;
+  // Redis
+  REDIS_HOST!: string;
+  REDIS_PORT!: number;
+  REDIS_TTL!: number;
+  REDIS_DB!: number;
 
-    // Jwt
-    JWT_ACCESS_TOKEN_TIME!: number;
-    JWT_SECRET_KEY!: string;
-    JWT_PUBLIC_KEY!: string;
+  // Jwt
+  JWT_ACCESS_TOKEN_TIME!: number;
+  JWT_SECRET_KEY!: string;
+  JWT_PUBLIC_KEY!: string;
 
-    // Email
-    EMAIL_SENDER!: string;
+  // Email
+  EMAIL_SENDER!: string;
 }
 
 export const validateEnv = (env: Record<string, string>) =>
@@ -46,9 +46,9 @@ export const validateEnv = (env: Record<string, string>) =>
     filteredEnv.JWT_ACCESS_TOKEN_TIME = Number.parseInt(filteredEnv.JWT_ACCESS_TOKEN_TIME as string, 10);
   }
 
-  if (filteredEnv.REDIS_HOST)
+  if (filteredEnv.REDIS_PORT)
   {
-    filteredEnv.REDIS_HOST = Number.parseInt(filteredEnv.REDIS_HOST as string, 10);
+    filteredEnv.REDIS_PORT = Number.parseInt(filteredEnv.REDIS_PORT as string, 10);
   }
 
   if (filteredEnv.REDIS_TTL)

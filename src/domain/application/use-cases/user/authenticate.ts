@@ -8,7 +8,7 @@ import { Either, left, right } from '@/core/either';
 import { UnauthorizedError } from '@/core/errors/unauthorized-error';
 import { EmailStatus } from '@/domain/enums/user-email-status';
 
-export interface UseCaseRequest
+interface UseCaseRequest
 {
 	email: string;
 	password: string;

@@ -56,7 +56,7 @@ export class KyselyFacturationRepository implements FacturationRepository
 
   async findManyByQuery(params: QueryDataLimitParams): Promise<Facturation[]>
   {
-    const { query, limit } = params;
+    const { query, perPage } = params;
 
     const facturations = await this.database
       .selectFrom('facturation')
@@ -67,7 +67,7 @@ export class KyselyFacturationRepository implements FacturationRepository
         op('addrees_number', 'like', query),
       ]))
       .selectAll()
-      .limit(limit)
+      .limit(perPage)
       .execute();
 
 		return facturations.map((item) =>

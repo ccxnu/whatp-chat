@@ -25,12 +25,12 @@ export class SearchByQueryCourseController
 	@HttpCode(200)
 	async handle(
 		@Query('query', ZodValidationQueryPipe) query: string,
-		@Query('limit', ZodValidationLimitPipe) limit: number,
+		@Query('limit', ZodValidationLimitPipe) perPage: number,
 	)
   {
 		const result = await this.searchByQueryUseCase.execute({
       query,
-      limit
+      perPage
 		})
 
 		if (result.isLeft())

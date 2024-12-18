@@ -1,4 +1,6 @@
-import { BadRequestException, Controller, HttpCode, Param, ParseUUIDPipe, Post } from '@nestjs/common';
+import { TypedParam, TypedRoute } from '@nestia/core';
+import { BadRequestException, Controller, HttpCode } from '@nestjs/common';
+import { tags } from 'typia';
 
 import { DeleteUserUseCase } from '@/application/use-cases/user/delete';
 import { CreateResponse } from '@/core/entities/response';
@@ -12,10 +14,17 @@ export class DeleteUserAccountController
 	constructor(private readonly deleteUseCase: DeleteUserUseCase)
   {}
 
-	@Post()
-	@HttpCode(200)
+  /**
+   * @summary 20241216 - Delete user account
+   *
+   * @tag user
+   * @param userId uuid
+   * @returns
+   */
   @Roles(UserRoles.ADMINISTRADOR)
-	async handle(@Param('userId', ParseUUIDPipe) userId: string)
+	@HttpCode(200)
+  @TypedRoute.Post()
+	async handle(@TypedParam('userId') userId: string & tags.Format<'uuid'>)
   {
 		const result = await this.deleteUseCase.execute({
 			userId,

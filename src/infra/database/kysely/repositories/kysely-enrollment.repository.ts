@@ -74,7 +74,7 @@ export class KyselyEnrollmentRepository implements EnrollmentRepository
 
     let builder = this.database
       .selectFrom('enrollment')
-      .innerJoin('user', 'user.id', 'enrollment.user_id')
+      .innerJoin('users', 'users.id', 'enrollment.user_id')
       .innerJoin('course', 'course.id', 'enrollment.course_id')
 
     if (userId)
@@ -119,10 +119,10 @@ export class KyselyEnrollmentRepository implements EnrollmentRepository
         "enrollment.is_completed",
         "enrollment.date_created",
         "enrollment.date_updated",
-        "user.id as user_id",
-        "user.full_name",
-        "user.cedula",
-        "user.email",
+        "users.id as user_id",
+        "users.full_name",
+        "users.cedula",
+        "users.email",
         "course.id as course_id",
         "course.name",
         "course.category",

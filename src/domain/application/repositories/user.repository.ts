@@ -7,7 +7,6 @@ import { UserDetails } from '@/domain/value-objects/user-details';
 
 export type FindManyByFiltersParams = PaginationParams & {
   role?: UserRoles;
-	deleted?: boolean;
 }
 
 export abstract class UserRepository

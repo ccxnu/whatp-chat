@@ -6,9 +6,6 @@ import { Either, right } from '@/core/either';
 import { PaginationData } from '@/core/repositories/pagination-data';
 import { UserDetails } from '@/domain/value-objects/user-details';
 
-interface FetchUserUseCaseRequest extends FindManyByFiltersParams
-{}
-
 type FetchUserUseCaseResponse = Either<
 	MinQuerySearchNotProviedError,
 	PaginationData<UserDetails[]>
@@ -20,7 +17,7 @@ export class FetchUserUseCase
 	constructor(private userRepository: UserRepository)
   {}
 
-	async execute({ ...props }: FetchUserUseCaseRequest): Promise<FetchUserUseCaseResponse>
+	async execute({ ...props }: FindManyByFiltersParams): Promise<FetchUserUseCaseResponse>
   {
 		const result = await this.userRepository.findManyByFilters({ ...props })
 

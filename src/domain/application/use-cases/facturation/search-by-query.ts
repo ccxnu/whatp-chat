@@ -8,7 +8,7 @@ import { Facturation } from '@/domain/entities/facturation';
 interface UseCaseRequest
 {
 	query: string;
-	limit: number;
+	perPage: number;
 }
 
 type UseCaseResponse = Either<
@@ -24,16 +24,17 @@ export class SearchByQueryFacturationUseCase
 	constructor(private readonly facturationRepository: FacturationRepository)
   {}
 
-	async execute({ query, limit }: UseCaseRequest): Promise<UseCaseResponse>
+	async execute({ query, perPage }: UseCaseRequest): Promise<UseCaseResponse>
   {
-		if (query.length < 2)
+		if (query && query.length < 2)
 		{
 			return left(new InvalidQueryLengthError(2))
 		}
 
 		const facturations = await this.facturationRepository.findManyByQuery({
       query,
-      limit
+      perPage,
+      page: 1,
 		})
 
 		return right({ data: facturations })

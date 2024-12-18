@@ -11,7 +11,7 @@ import { UserTable } from './tables/user.table';
 
 export interface DatabaseTable
 {
-  user: UserTable;
+  users: UserTable;
   chat_sessions: ChatSessionsTable;
   chat_messages: ChatMessagesTable;
   course: CourseTable;

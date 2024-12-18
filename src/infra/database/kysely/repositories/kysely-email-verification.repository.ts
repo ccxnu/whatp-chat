@@ -68,7 +68,7 @@ export class KyselyEmailVerificationRepository implements EmailVerificationRepos
           .executeTakeFirst()
 
         await trx
-          .updateTable('user')
+          .updateTable('users')
           .set({
             date_updated: user.dateUpdated,
             email_status: EmailStatus.VERTIFIED

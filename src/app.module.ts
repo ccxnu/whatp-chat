@@ -12,6 +12,7 @@ import { HttpModule } from '@/interface/http/http.module';
       ConfigModule.forRoot({
         validate: validateEnv,
         isGlobal: true,
+        cache: true,
       }),
       AuthModule,
       HttpModule,

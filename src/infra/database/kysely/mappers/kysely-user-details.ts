@@ -1,9 +1,11 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { UserDetails } from '@/domain/value-objects/user-details'
 
+import { UserTable } from '../tables/user.table'
+
 export class KyselyUserDetailsMapper
 {
-	static toDomain(raw: any): UserDetails
+	static toDomain(raw: UserTable): UserDetails
   {
 		return UserDetails.create(
 			{
@@ -11,8 +13,7 @@ export class KyselyUserDetailsMapper
 				role: raw.role,
 				cedula: raw.cedula,
 				email: raw.email,
-        firstNames: raw.first_names,
-        lastNames: raw.last_names,
+        fullName: raw.full_name,
         phone: raw.phone,
         gender: raw.gender,
         birthDate: raw.birth_date,
