@@ -8,9 +8,9 @@ import { UserTable } from './tables/user.table';
 export interface DatabaseTable
 {
   users: UserTable;
+  email_verification: EmailVerificationTable;
   chat_sessions: ChatSessionsTable;
   chat_messages: ChatMessagesTable;
-  email_verification: EmailVerificationTable;
 }
 
 

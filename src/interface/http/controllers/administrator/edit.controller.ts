@@ -1,12 +1,6 @@
-import {
-	BadRequestException,
-	Body,
-	ConflictException,
-	Controller,
-	HttpCode,
-	Post,
-} from '@nestjs/common';
-import { z } from 'zod';
+import { TypedBody, TypedRoute } from '@nestia/core';
+import { BadRequestException, ConflictException, Controller, HttpCode } from '@nestjs/common';
+import { tags } from 'typia';
 
 import { UserAlreadyExistsError } from '@/application/errors/user-already-exists-error';
 import { EditAdminUseCase } from '@/application/use-cases/administrator/edit';
@@ -15,19 +9,13 @@ import { UserGenders } from '@/domain/enums/user-gender';
 import { UserRoles } from '@/domain/enums/user-roles';
 import { Roles } from '@/infra/auth/decorator/user-roles.decorator';
 
-import { ZodValidationPipe } from '../../pipes/zod-validation.pipe';
-
-const editAccountBodySchema = z.object({
-  userId: z.string(),
-	fullName: z.string().optional(),
-	phone: z.string().optional(),
-  gender: z.nativeEnum(UserGenders).optional(),
-  birthDate: z.coerce.date({ message: 'Invalid Format, use YYYY-MM-DD' }).optional(),
-  role: z.nativeEnum(UserRoles).optional(),
-})
-
-type EditAccountBodySchema = z.infer<typeof editAccountBodySchema>;
-const bodyValidationPipe = new ZodValidationPipe(editAccountBodySchema);
+interface EditUserDto
+{
+  userId: string & tags.Format<'uuid'>;
+  phone: null | (string & tags.Pattern<"^[0-9]+$"> & tags.MinLength<10> & tags.MaxLength<13>);
+  gender: null | UserGenders;
+  role: null | UserRoles;
+}
 
 @Controller('/administrator/user/edit-account')
 export class EditAdminAccountController
@@ -35,26 +23,29 @@ export class EditAdminAccountController
 	constructor(private editUseCase: EditAdminUseCase)
   {}
 
-	@Post()
-	@HttpCode(200)
+  /**
+   * @summary 20241216 - Edit user info
+   *
+   * @tag admin
+   * @param EditUserDto
+   * @returns
+   */
   @Roles(UserRoles.ADMINISTRADOR)
-	async handle(@Body(bodyValidationPipe) body: EditAccountBodySchema)
+	@HttpCode(200)
+  @TypedRoute.Post()
+	async handle(@TypedBody() body: EditUserDto)
   {
 		const {
       userId,
-      fullName,
       phone,
       gender,
-      birthDate,
       role
     } = body;
 
 		const result = await this.editUseCase.execute({
       userId,
-      fullName,
       phone,
       gender,
-      birthDate,
       role
 		});
 

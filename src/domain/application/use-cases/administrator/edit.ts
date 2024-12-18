@@ -10,11 +10,9 @@ import { UserRoles } from '@/domain/enums/user-roles';
 interface EditAdminUseCaseRequest
 {
 	userId: string;
-	fullName?: string;
-	phone?: string;
-  gender?: UserGenders;
-  birthDate?: Date;
-  role?: UserRoles;
+	phone: null | string;
+  gender: null | UserGenders;
+  role: null | UserRoles;
 }
 
 type EditAdminUseCaseResponse = Either<ResourceNotFoundError, object>
@@ -27,10 +25,8 @@ export class EditAdminUseCase
 
 	async execute({
 		userId,
-		fullName,
 		phone,
     gender,
-    birthDate,
     role,
 	}: EditAdminUseCaseRequest): Promise<EditAdminUseCaseResponse>
   {
@@ -41,10 +37,8 @@ export class EditAdminUseCase
 			return left(new ResourceNotFoundError());
 		}
 
-		if (fullName) user.fullName = fullName;
 		if (phone) user.phone = phone;
 		if (gender) user.gender = gender;
-		if (birthDate) user.dateOfBirth = birthDate;
     if (role) user.role = role;
 
 		await this.userRepository.edit(user);

@@ -22,7 +22,6 @@ interface RegisterAdminUseCaseRequest
   cedula: string;
   phone: string;
 	gender: UserGenders;
-	dateOfBirth: Date;
   role: UserRoles;
   ip: string;
   userAgent: string;
@@ -53,7 +52,6 @@ export class RegisterAdminUseCase
 		cedula,
 		phone,
 		gender,
-		dateOfBirth,
     role,
     ip,
     userAgent
@@ -82,7 +80,6 @@ export class RegisterAdminUseCase
 			cedula,
 			phone,
 			gender,
-      dateOfBirth,
 			role,
       emailStatus: EmailStatus.NOT_VERIFIED,
 		})

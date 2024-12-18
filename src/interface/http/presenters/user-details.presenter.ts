@@ -12,7 +12,6 @@ export class UserDetailsPresenter
       fullName: details.fullName,
 			phone: details.phone,
       gender: details.gender,
-      birthDate: details.birthDate,
       dateCreated: details.dateCreated,
       dateUpdated: details.dateUpdated,
 		}

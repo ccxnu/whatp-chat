@@ -16,7 +16,6 @@ export class KyselyUserDetailsMapper
         fullName: raw.full_name,
         phone: raw.phone,
         gender: raw.gender,
-        birthDate: raw.birth_date,
         dateCreated: raw.date_created,
         dateUpdated: raw.date_updated,
 			},

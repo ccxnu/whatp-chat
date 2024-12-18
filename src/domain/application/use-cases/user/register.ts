@@ -21,8 +21,6 @@ interface RegisterUserUseCaseRequest
 	password: string;
   phone: string;
 	gender: UserGenders;
-	dateOfBirth: string;
-  city: string;
   ip: string;
   userAgent: string;
 }
@@ -51,7 +49,6 @@ export class RegisterUserUseCase
 		cedula,
 		phone,
 		gender,
-		dateOfBirth,
     ip,
     userAgent,
 	}: RegisterUserUseCaseRequest): Promise<RegisterUserUseCaseResponse>
@@ -84,13 +81,14 @@ export class RegisterUserUseCase
 			fullName: academicokUser.fullName,
 			password: hashedPassword,
 			email: academicokUser.email,
-			cedula: academicokUser.cedula,
+			cedula,
 			phone,
 			gender,
-      dateOfBirth: new Date(dateOfBirth),
 			role: academicokUser.role,
       emailStatus: EmailStatus.NOT_VERIFIED,
 		})
+
+    console.log(user)
 
     const emailToken = new RandomNumber().toString();
 

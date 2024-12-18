@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { z } from 'zod';
+import typia, { tags } from 'typia';
 
+import { IActiveUser } from '@/core/repositories/active-user-data';
 import { UserRoles } from '@/domain/enums/user-roles';
 import { EnvService } from '@/infra/env/env.service';
 
-const tokenPayloadSchema = z.object({
-	sub: z.string().uuid(),
-	email: z.string().email(),
-	role: z.nativeEnum(UserRoles),
-})
-
-export type UserPayload = z.infer<typeof tokenPayloadSchema>
+interface UserPayload
+{
+  sub: string & tags.Format<'uuid'>;
+  email: string & tags.Format<'email'>;
+  roles: UserRoles;
+}
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy)
@@ -34,8 +34,8 @@ export class JwtStrategy extends PassportStrategy(Strategy)
     });
   }
 
-  async validate(payload: UserPayload)
+  async validate(payload: IActiveUser)
   {
-    return tokenPayloadSchema.parse(payload);
+    return typia.assertEquals<UserPayload>(payload);
   }
 }

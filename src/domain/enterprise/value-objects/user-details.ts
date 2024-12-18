@@ -12,7 +12,6 @@ export interface UserDetailsProps
 	fullName: string;
   phone: string;
 	gender: UserGenders;
-	birthDate: Date;
   dateCreated: Date;
   dateUpdated: Date;
 }
@@ -52,11 +51,6 @@ export class UserDetails extends ValueObject<UserDetailsProps>
 	get gender()
   {
 		return this.props.gender;
-	}
-
-	get birthDate()
-  {
-		return this.props.birthDate;
 	}
 
 	get dateCreated()

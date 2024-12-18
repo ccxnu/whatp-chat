@@ -20,7 +20,6 @@ import { AcademicokModule } from '@/infra/academicok/academicok.module';
 import { CryptographyModule } from '@/infra/cryptography/cryptography.module';
 import { DatabaseModule } from '@/infra/database/database.module';
 import { MailerModule } from '@/infra/mailer/mailer.module';
-import { TransformerModule } from '@/infra/transformer/transformer.module';
 
 // Controllers
 import { EditAdminAccountController } from './controllers/administrator/edit.controller';
@@ -44,7 +43,6 @@ import { ViewUserAccountController } from './controllers/user/view.controller';
     DatabaseModule,
     CryptographyModule,
     MailerModule,
-    TransformerModule,
     AcademicokModule,
   ],
 	controllers:

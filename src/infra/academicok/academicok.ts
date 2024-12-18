@@ -3,31 +3,55 @@ import { Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { lastValueFrom } from 'rxjs';
 
-import { AcademicokRepository } from '@/application/academicok/academicok';
-import { User } from '@/domain/entities/user';
+import { AcademicokRepository, UserIsts } from '@/application/academicok/academicok';
+import { UserRoles } from '@/domain/enums/user-roles';
 
 @Injectable()
 export class AcademicokIstsRepository implements AcademicokRepository
 {
-  private ACADEMICOK_ISTS_URL: string = "http://20.84.48.225:5056/api/emails/enviarDirecto";
+  private ACADEMICOK_API_DOCENTE = "https://itsl.academicok.com/api?a=apidatosdocente&key=123&identificacion=";
+  private ACADEMICOK_API_DATOS = "https://itsl.academicok.com/api?a=apidatospersona&key=j62kDJnltU4wVqp&identificacion=";
 
   constructor(private readonly httpService: HttpService)
   {}
 
-  async fetchUserInfo(cedula: string): Promise<User | null>
+  async fetchUserInfo(cedula: string): Promise<UserIsts | null>
   {
-    const response = await lastValueFrom<AxiosResponse<User>>(
-      this.httpService
-        .get(`${this.ACADEMICOK_ISTS_URL}/?${cedula}`)
-      );
+    // API PERSONAL
+    const response = await lastValueFrom<AxiosResponse>(
+      this.httpService.get(`${this.ACADEMICOK_API_DATOS}${cedula}`)
+    );
+    const userInfo = response.data.data;
 
-    if (!response.data) return null;
+    // Verifica si la propiedad 'data' no está vacía
+    if (!userInfo || Object.keys(userInfo).length <= 0) return null;
 
-    // TODO: Parsear información para que se ajuste al usuario
-    //const user = User.create({
-    //  response.data
-    //});
+    // API DOCENTE
+    const responseDocente = await lastValueFrom<AxiosResponse>(
+      this.httpService.get(`${this.ACADEMICOK_API_DOCENTE}${cedula}`)
+    );
+    const docenteInfo = responseDocente.data.data;
 
-    return response.data;
+    // Verifica si la propiedad 'data' no está vacía
+    if (!docenteInfo || Object.keys(docenteInfo).length <= 0)
+    {
+      const user = {
+        fullName: userInfo.nombre,
+        email: userInfo.email,
+        role: UserRoles.ESTUDIANTE,
+      } as UserIsts;
+
+      return user;
+    }
+    else
+    {
+      const docente = {
+        fullName: userInfo.nombre,
+        email: userInfo.email,
+        role: UserRoles.DOCENTE,
+      } as UserIsts;
+
+      return docente;
+    }
   }
 }

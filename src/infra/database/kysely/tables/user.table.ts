@@ -11,7 +11,6 @@ export interface UserTable
   cedula: string;
   phone: string;
 	gender: UserGenders;
-	birth_date: Date;
 	role: UserRoles;
   email_status: EmailStatus;
   date_created: Date;

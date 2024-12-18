@@ -11,9 +11,8 @@ import { ActiveUser } from '@/infra/auth/decorator/active-user.decorator';
 
 interface EditUserDto
 {
-  phone: (string & tags.Pattern<"^[0-9]+$"> & tags.MinLength<10> & tags.MaxLength<13>) | null;
-  gender: UserGenders | null;
-  dateOfBirth: (string & tags.Format<"date">) | null;
+  phone: null | (string & tags.Pattern<"^[0-9]+$"> & tags.MinLength<10> & tags.MaxLength<13>);
+  gender: null | UserGenders;
 }
 
 @Controller('/user/edit-account')
@@ -34,7 +33,7 @@ export class EditUserAccountController
 	async handle(@TypedBody() body: EditUserDto, @ActiveUser() user: IActiveUser)
   {
     const { sub } = user;
-    const { phone, gender, dateOfBirth } = body;
+    const { phone, gender } = body;
 
     console.log(body)
 
@@ -42,7 +41,6 @@ export class EditUserAccountController
       userId: sub,
       phone,
       gender,
-      dateOfBirth,
     });
 
 		if (result.isLeft())

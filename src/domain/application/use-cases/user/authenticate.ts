@@ -37,7 +37,7 @@ export class AuthenticateUserUseCase
 
 		if (!user)
     {
-			return left(new InvalidCredentialsError());
+			return left(new InvalidCredentialsError('El usuario no existe'));
 		}
 
     if (user.emailStatus === EmailStatus.NOT_VERIFIED)

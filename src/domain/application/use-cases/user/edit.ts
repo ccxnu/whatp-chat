@@ -11,7 +11,6 @@ interface EditUserUseCaseRequest
 	userId: string;
 	phone: null | string;
   gender: null | UserGenders;
-  dateOfBirth: null | string;
 }
 
 type EditUserUseCaseResponse = Either<ResourceNotFoundError, object>
@@ -26,7 +25,6 @@ export class EditUserUseCase
 		userId,
 		phone,
     gender,
-    dateOfBirth,
 	}: EditUserUseCaseRequest): Promise<EditUserUseCaseResponse>
   {
 		const user = await this.userRepository.findById(userId);
@@ -38,7 +36,6 @@ export class EditUserUseCase
 
 		if (phone) user.phone = phone;
 		if (gender) user.gender = gender;
-		if (dateOfBirth) user.dateOfBirth = new Date(dateOfBirth);
 
 		await this.userRepository.edit(user);
 

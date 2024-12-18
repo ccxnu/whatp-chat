@@ -5,11 +5,11 @@ export async function up(db: Kysely<any>)
   await db.schema
     .createTable('email_verification')
     .ifNotExists()
-    .addColumn('id', 'char(36)', (col) => col.primaryKey().defaultTo(sql`(UUID())`))
-    .addColumn('user_id', 'char(36)', (col) => col.references('user.id').notNull().onDelete('cascade'))
+    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`(gen_random_uuid())`))
+    .addColumn('user_id', 'uuid', (col) => col.references('users.id').notNull().onDelete('cascade'))
     .addColumn('email_token', 'char(7)', (col) => col.notNull())
-    .addColumn('date_created', 'datetime', (col) => col.defaultTo(sql`now()`).notNull())
-    .addColumn('date_deleted', 'datetime')
+    .addColumn('date_created', 'timestamp', (col) => col.defaultTo(sql`(CURRENT_TIMESTAMP)`))
+    .addColumn('date_deleted', 'timestamp')
     .execute();
 }
 

@@ -12,12 +12,10 @@ import { UserAgent } from '@/infra/auth/decorator/user-agent.decorator';
 
 interface RegisterUserDto
 {
-  cedula: string & tags.Pattern<"^[0-9]+$"> & tags.MinLength<10> & tags.MaxLength<10>;
-  password: string & tags.Format<"password"> & tags.MinLength<8> & tags.MaxLength<60>;
+  cedula: string & tags.Pattern<'^[0-9]+$'> & tags.MinLength<10> & tags.MaxLength<10>;
+  password: string & tags.Format<'password'> & tags.MinLength<8> & tags.MaxLength<60>;
   phone: string & tags.Pattern<"^[0-9]+$"> & tags.MinLength<10> & tags.MaxLength<13>;
   gender: UserGenders;
-  dateOfBirth: string & tags.Format<"date">;
-  city: string;
 }
 
 @Public()

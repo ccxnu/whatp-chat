@@ -13,8 +13,6 @@ export interface UserProps
   cedula: string;
   phone: string;
 	gender: UserGenders;
-	dateOfBirth: Date;
-  //city: string | null;
 
   //isTfaEnable: boolean;
   //tfaSecretTfa: string;
@@ -84,16 +82,6 @@ export class User extends Entity<UserProps>
 	set gender(gender: UserGenders)
   {
 		this.props.gender = gender;
-	}
-
-	get dateOfBirth()
-  {
-		return this.props.dateOfBirth;
-	}
-
-	set dateOfBirth(date: Date)
-  {
-		this.props.dateOfBirth = date;
 	}
 
 	get role()

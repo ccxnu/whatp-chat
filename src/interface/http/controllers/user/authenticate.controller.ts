@@ -10,8 +10,8 @@ import { Public } from '@/infra/auth/decorator/public.decorator';
 
 interface LoginUserDto
 {
-  email: string & tags.Format<"email">;
-  password: string & tags.Format<"password"> & tags.MinLength<8> & tags.MaxLength<60>;
+  email: string & tags.Format<'email'>;
+  password: string & tags.Format<'password'> & tags.MaxLength<60>;
 }
 
 @Public()

@@ -25,7 +25,6 @@ const createAccountBodySchema = z.object({
   cedula: z.string().length(10),
 	phone: z.string(),
   gender: z.nativeEnum(UserGenders),
-  dateOfBirth: z.coerce.date(),
   role: z.nativeEnum(UserRoles),
 })
 
@@ -54,7 +53,6 @@ export class RegisterAdminAccountController
       cedula,
       phone,
       gender,
-      dateOfBirth,
       role,
     } = body;
 
@@ -65,7 +63,6 @@ export class RegisterAdminAccountController
       cedula,
       phone,
       gender,
-      dateOfBirth,
       role,
       ip,
       userAgent

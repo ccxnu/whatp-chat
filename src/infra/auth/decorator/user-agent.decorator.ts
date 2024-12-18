@@ -4,7 +4,7 @@ import { FastifyRequest } from 'fastify';
 import { REQUEST_USER_AGENT } from '../constants';
 
 export const UserAgent = createParamDecorator(
-  (ctx: ExecutionContext) =>
+  (_data: unknown, ctx: ExecutionContext) =>
   {
     const request = ctx.switchToHttp().getRequest<FastifyRequest>();
     const agent: string | undefined = request.headers[REQUEST_USER_AGENT];
