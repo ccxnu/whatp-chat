@@ -5,7 +5,11 @@ import { User } from '@/domain/entities/user';
 import { UserRoles } from '@/domain/enums/user-roles';
 import { UserDetails } from '@/domain/value-objects/user-details';
 
-export type FindManyByFiltersParams = PaginationParams & {
+export interface FindManyByFiltersParams extends PaginationParams
+{
+  /**
+   * User roles
+   */
   role?: UserRoles;
 }
 

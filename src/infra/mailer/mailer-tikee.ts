@@ -6,7 +6,6 @@ import { MailerRepository } from '@/application/mailer/mailer';
 import { DateFormat } from '@/core/entities/date';
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
 import { EmailVerification } from '@/domain/entities/email-verification';
-import { EmailVerificationRequest } from '@/domain/entities/mailer';
 import { User } from '@/domain/entities/user';
 import { EnvService } from '@/infra/env/env.service';
 
@@ -35,7 +34,7 @@ export class TikeeMailerRepository implements MailerRepository
     asunto: string,
     ip: string,
     dispositivo: string,
-  ): EmailVerificationRequest
+  )
 {
     return {
       idUser: user.id.toString(),

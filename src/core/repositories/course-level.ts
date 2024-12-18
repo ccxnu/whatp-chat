@@ -1,6 +1,0 @@
-export enum CourseLevel
-{
-  PRINCIPIANTE = 'PRINCIPIANTE',
-  INTERMEDIO = 'INTERMEDIO',
-  AVANZADO = 'AVANZADO',
-}

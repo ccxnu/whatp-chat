@@ -8,7 +8,6 @@ import { lastValueFrom } from 'rxjs';
 
 import { TransformerRepository } from '@/application/transformer/transformer';
 import { DateFormat } from '@/core/entities/date';
-import { CertificateDetails } from '@/domain/value-objects/certificate-details';
 
 @Injectable()
 export class TikeeTransformerRepository implements TransformerRepository
@@ -16,7 +15,7 @@ export class TikeeTransformerRepository implements TransformerRepository
   constructor(private readonly httpService: HttpService)
   {}
 
-  async generateCertificate(certificate: CertificateDetails): Promise<Buffer>
+  async generateCertificate(certificate: any): Promise<Buffer>
   {
     const dateCompleted = new DateFormat(certificate.dateCompleted);
 
