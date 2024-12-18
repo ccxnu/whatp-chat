@@ -1,9 +1,5 @@
-import {
-	BadRequestException,
-	Controller,
-	Get,
-	HttpCode,
-} from '@nestjs/common';
+import { TypedRoute } from '@nestia/core';
+import { BadRequestException, Controller, HttpCode } from '@nestjs/common';
 
 import { ViewUserUseCase } from '@/application/use-cases/user/view';
 import { CreateResponse } from '@/core/entities/response';
@@ -18,8 +14,14 @@ export class ViewUserAccountController
 	constructor(private viewUseCase: ViewUserUseCase)
   {}
 
-	@Get()
+  /**
+   * @summary 20241216 - Get user profile
+   *
+   * @tag user
+   * @returns
+   */
 	@HttpCode(200)
+	@TypedRoute.Get()
 	async handle(@ActiveUser() user: IActiveUser)
   {
     const { sub } = user;

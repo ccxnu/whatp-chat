@@ -1,28 +1,17 @@
-import {
-	BadRequestException,
-	Body,
-	Controller,
-	HttpCode,
-	Post,
-	UnauthorizedException,
-} from '@nestjs/common';
-import { z } from 'zod';
+import { TypedBody, TypedRoute } from '@nestia/core';
+import { BadRequestException, Controller, HttpCode, UnauthorizedException } from '@nestjs/common';
+import { tags } from 'typia';
 
 import { InvalidCredentialsError } from '@/application/errors/invalid-credentials-error';
 import { VerifyEmailUseCase } from '@/application/use-cases/user/verify-email';
 import { CreateResponse } from '@/core/entities/response';
 import { Public } from '@/infra/auth/decorator/public.decorator';
-import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';
 
-
-const authenticateBodySchema = z.object({
-  email: z.string().email(),
-	emailToken: z.string(),
-})
-
-type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
-
-const bodyValidationPipe = new ZodValidationPipe(authenticateBodySchema)
+interface VerifyEmailTokenDto
+{
+  email: string & tags.Format<'email'>;
+  emailToken: string;
+}
 
 @Public()
 @Controller('/authenticate/verify-email-token')
@@ -31,9 +20,16 @@ export class VerifyEmailController
 	constructor(private readonly verifyEmailUseCase: VerifyEmailUseCase)
   {}
 
-	@Post()
+  /**
+   * @summary 20241216 - Verify email token
+   *
+   * @tag user
+   * @param VerifyEmailTokenDto
+   * @returns
+   */
 	@HttpCode(201)
-	async handle(@Body(bodyValidationPipe) body: AuthenticateBodySchema)
+  @TypedRoute.Post()
+	async handle(@TypedBody() body: VerifyEmailTokenDto)
   {
 		const { email, emailToken } = body
 

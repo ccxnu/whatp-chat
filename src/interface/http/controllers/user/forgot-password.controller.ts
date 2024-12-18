@@ -1,27 +1,17 @@
-import {
-	Body,
-	Controller,
-	HttpCode,
-	Ip,
-	Post,
-	UnauthorizedException,
-} from '@nestjs/common';
-import { z } from 'zod';
+import { TypedBody, TypedRoute } from '@nestia/core';
+import { Controller, HttpCode, Ip, UnauthorizedException } from '@nestjs/common';
+import { tags } from 'typia';
 
 import { ForgotPasswordUseCase } from '@/application/use-cases/user/forgot-password';
 import { CreateResponse } from '@/core/entities/response';
 import { Public } from '@/infra/auth/decorator/public.decorator';
 import { UserAgent } from '@/infra/auth/decorator/user-agent.decorator';
-import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';
 
 
-const authenticateBodySchema = z.object({
-  email: z.string().email(),
-})
-
-type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
-
-const bodyValidationPipe = new ZodValidationPipe(authenticateBodySchema)
+interface ForgotPasswordDto
+{
+  email: string & tags.Format<'email'>;
+}
 
 @Public()
 @Controller('/authenticate/forgot-password')
@@ -30,15 +20,22 @@ export class ForgotPasswordController
 	constructor(private readonly forgotPasswordUseCase: ForgotPasswordUseCase)
   {}
 
-	@Post()
+  /**
+   * @summary 20241216 - Forgot user password
+   *
+   * @tag user
+   * @param ForgotPasswordDto
+   * @returns
+   */
 	@HttpCode(201)
+  @TypedRoute.Post()
 	async handle(
-    @Body(bodyValidationPipe) body: AuthenticateBodySchema,
+    @TypedBody() body: ForgotPasswordDto,
     @Ip() ip: string,
     @UserAgent() userAgent: string,
   )
   {
-		const { email } = body
+		const { email } = body;
 
 		const response = await this.forgotPasswordUseCase.execute({
       email,
