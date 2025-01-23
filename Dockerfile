@@ -17,10 +17,8 @@ RUN npm ci && \
     rm -f .npmrc
 
 COPY tsconfig*.json ./
-COPY .swcrc ./
 COPY nest-cli.json ./
 COPY src src
-COPY public public
 
 RUN npm run build && \
     npm prune --production && \
@@ -39,7 +37,6 @@ COPY --from=build /usr/bin/dumb-init /usr/bin/dumb-init
 COPY --from=build $DIR/package*.json ./
 COPY --from=build $DIR/node_modules node_modules
 COPY --from=build $DIR/dist dist
-COPY --from=build $DIR/public public
 
 USER $USER
 CMD ["dumb-init", "node", "dist/main.js"]
