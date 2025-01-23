@@ -22,7 +22,7 @@ import { SocketIoClientModule } from './infra/socket/socket.module';
         useFactory: () => ({
           fallbackLanguage: 'es',
           loaderOptions: {
-            path: path.join(__dirname, '/interface/i18n/'),
+            path: path.join(__dirname, '/src/interface/i18n/'),
             watch: true,
           },
           typesOutputPath: path.join( __dirname, '../../src/infra/generated/i18n.generated.ts'),
