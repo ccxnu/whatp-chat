@@ -1,0 +1,32 @@
+{
+  "header": "🗒️ *Lista de comandos*\n",
+  "command-item": "• *{name}* - _{description}_",
+  "footer": "\n*Para más detalles sobre un comando específico, utiliza {prefix}help <comando>*",
+  "commands-info": {
+    "commands": {
+      "title": "Comandos",
+      "description": "Lista todos los comandos",
+      "usage": "{prefix}commands"
+    },
+    "sticker": {
+      "title": "Sticker",
+      "description": "Crea un sticker con el medio (imagen o video) enviado o respondido.",
+      "usage": "{prefix}sticker (respondiendo a un medio o enviando un medio con el comando en el pie de foto)"
+    },
+    "ping": {
+      "title": "Ping",
+      "description": "Devuelve el tiempo calculado entre el envío y el procesamiento del comando.",
+      "usage": "{prefix}ping"
+    },
+    "info": {
+      "title": "Info",
+      "description": "Devuelve información sobre el bot.",
+      "usage": "{prefix}info"
+    },
+    "help": {
+      "title": "Ayuda",
+      "description": "Devuelve una breve guía sobre el bot o un comando específico.",
+      "usage": "{prefix}help [comando]"
+    }
+  }
+}

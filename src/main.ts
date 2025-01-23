@@ -1,42 +1,51 @@
+import { LogLevel } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
+import { MicroserviceOptions } from '@nestjs/microservices';
 
 import { EnvService } from '@/infra/env/env.service';
+import { SocketIoClientProvider } from '@/infra/socket/socket-io-client-provider';
 
 import { AppModule } from './app.module';
-import { AllExceptionFilter } from './interface/common/filters/all-exception.filter';
-import { LoggingInterceptor } from './interface/common/interceptors/logger.interceptor';
-//import { SwaggerSetting } from './interface/swagger';
+import { SocketIoClientStrategy } from './infra/socket/socket-io-client.strategy';
+import { OpenAPI } from './infra/wpp-connect-sdk';
+
+function getLogLevels(): LogLevel[]
+{
+  const environment = process.env.NODE_ENV || 'development';
+  const isInDevelopmentMode = environment === 'development';
+  const defaultLogLevel: LogLevel[] =
+  [
+    'error',
+    'warn',
+    'log',
+    'debug',
+    'fatal',
+  ];
+
+  return isInDevelopmentMode ? [...defaultLogLevel, 'verbose'] : defaultLogLevel;
+}
 
 async function bootstrap()
 {
-  const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    new FastifyAdapter(),
-    { logger: ['error', 'warn'] }
-  );
+  const app = await NestFactory.create(AppModule, { logger: getLogLevels() });
 
   // Env constants
-	const envService = app.get(EnvService)
-  const GLOBAL_PREFIX = envService.get('GLOBAL_PREFIX');
+	const config = app.get(EnvService);
 
-  // Enable Cors
-  app.enableCors();
+  const socketIoClientProvider = app.get<SocketIoClientProvider>(SocketIoClientProvider);
 
-  // Filter
-  app.useGlobalFilters(new AllExceptionFilter());
+  app.connectMicroservice<MicroserviceOptions>({
+    strategy: new SocketIoClientStrategy(socketIoClientProvider.getSocket())
+  });
 
-  // Interceptors
-  app.useGlobalInterceptors(new LoggingInterceptor());
+  OpenAPI.WITH_CREDENTIALS = true;
+  OpenAPI.BASE = config.get('WPPCONNECT_BASE');
+  OpenAPI.TOKEN = config.get('WPPCONNECT_TOKEN');
 
-  // Base routing
-  app.setGlobalPrefix(GLOBAL_PREFIX);
+  await app.startAllMicroservices();
 
-  // Documentation
-  //SwaggerSetting(app);
-
-  await app.listen(3000, '0.0.0.0');
-  console.info(`Service running on port 3000 ^~^`);
+  await app.listen(0);
+  console.info(`Microservice running`);
 }
 
 bootstrap();

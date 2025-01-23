@@ -1,5 +1,4 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
-import { FastifyReply } from 'fastify';
 
 interface IError
 {
@@ -13,7 +12,7 @@ export class AllExceptionFilter implements ExceptionFilter
 {
   catch(exception: Error | HttpException, host: ArgumentsHost)
   {
-    const response = host.switchToHttp().getResponse<FastifyReply>();
+    const response = host.switchToHttp().getResponse();
 
     //const status = exception instanceof HttpException
     //  ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;

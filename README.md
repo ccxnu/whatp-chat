@@ -1,13 +1,11 @@
-# App Denver Ists
+# Chatbot Ists
 
-Servicio para el seguiemento de la salud en niños de 0.1 a 6 años
-mediante el test de Denver.
+Chatbot del Instituto Superior Tecnológico Sudamericano.
 
 ## Requisitos
 
 - [Node.js](https://nodejs.org/en/download/)(+20)
 - [Docker](https://www.docker.com/get-started)
-- Mysql
 
 ## Instalación
 
