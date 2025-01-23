@@ -5,9 +5,8 @@ cd "$(dirname "$0")"
 echo 'Inicio'
 
 # Variables
-NAME_CONTAINER="ragchat-ists"
-NAME_IMAGE="ragchat-ists"
-PORT_EXPOSE=8048
+NAME_CONTAINER="whap-chat"
+NAME_IMAGE="whap-chat"
 ENV_FILE="/CONFIG/VARIABLES_ENTORNO/ragchat-ists/.env"
 NETWORK="database"
 
@@ -22,7 +21,6 @@ docker run -d \
   --name "$NAME_CONTAINER" \
   --env-file "$ENV_FILE" \
   --network "$NETWORK" \
-  -p "$PORT_EXPOSE":3000 \
   "$NAME_IMAGE"
 
 echo 'Successfull service'

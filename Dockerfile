@@ -1,4 +1,4 @@
-FROM node:20-alpine3.21 AS base
+FROM node:20-alpine3.18 AS base
 
 ENV DIR=/app
 WORKDIR $DIR
@@ -42,5 +42,4 @@ COPY --from=build $DIR/dist dist
 COPY --from=build $DIR/public public
 
 USER $USER
-EXPOSE 3000
 CMD ["dumb-init", "node", "dist/main.js"]
