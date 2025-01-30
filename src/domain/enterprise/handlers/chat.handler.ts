@@ -3,6 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
 import { IUpdateHandler } from '@/application/repositories/handle.repository';
+import { EnvService } from '@/infra/env/env.service';
 import { MessagesService } from '@/infra/wpp-connect-sdk';
 
 import { HandlerFilter } from '../filter/handler-filter';
@@ -11,12 +12,16 @@ import { HandlerFilter } from '../filter/handler-filter';
 export class ChatHandler implements IUpdateHandler
 {
   private readonly logger = new Logger(ChatHandler.name);
+  private URL: string;
 
   constructor(
     private readonly httpService: HttpService,
     private readonly filter: HandlerFilter,
+    private readonly env: EnvService,
   )
-  {}
+  {
+      this.URL = this.env.get('BACKEND_URL');
+  }
 
   match({ response }: any)
   {
@@ -29,12 +34,14 @@ export class ChatHandler implements IUpdateHandler
   async handle({ response }: any)
   {
     try 
-{
+    {
       const userMessage = response.body; // Obtener el mensaje del usuario
       this.logger.log(`User message: ${userMessage}`);
 
-      // Llamar a la API con el mensaje del usuario
-      const apiUrl = 'http://localhost:3000/api/rag/chat'; // Reemplaza con la URL de tu API
+      // Llamar a la API con el mensaje del usuario Por ahora aquí.
+      // Hacer clase dedicada
+      const apiUrl = `${this.URL}/rag/chat`; // Reemplaza con la URL de tu API
+      console.log(apiUrl)
       const apiResponse = await firstValueFrom(
         this.httpService.post(apiUrl, { query: userMessage }),
       );
@@ -45,7 +52,7 @@ export class ChatHandler implements IUpdateHandler
       )?.content;
 
       if (!assistantMessage) 
-{
+      {
         throw new Error('No se encontró una respuesta del asistente.');
       }
 

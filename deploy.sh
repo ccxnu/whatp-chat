@@ -5,10 +5,10 @@ cd "$(dirname "$0")"
 echo 'Inicio'
 
 # Variables
-NAME_CONTAINER="whap-chat"
-NAME_IMAGE="whap-chat"
+NAME_CONTAINER="whatchat"
+NAME_IMAGE="whatchat"
 ENV_FILE="/CONFIG/VARIABLES_ENTORNO/ragchat-ists/.env"
-NETWORK="database"
+NETWORK="ists"
 
 docker build --target production -t "$NAME_IMAGE" -f Dockerfile .
 

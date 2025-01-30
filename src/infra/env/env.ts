@@ -13,6 +13,9 @@ export const envSchema = z.object(
     WPPCONNECT_SESSION: z.string(),
     WPPCONNECT_BASE: z.string(),
     WPPCONNECT_TOKEN: z.string(),
+
+    // Backend
+    BACKEND_URL: z.string(),
   }
 )
 

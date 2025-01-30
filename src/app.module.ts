@@ -19,14 +19,18 @@ import { SocketIoClientModule } from './infra/socket/socket.module';
         cache: true,
       }),
       I18nModule.forRootAsync({
-        useFactory: () => ({
-          fallbackLanguage: 'es',
-          loaderOptions: {
-            path: path.join(__dirname, '/src/interface/i18n/'),
-            watch: true,
-          },
-          typesOutputPath: path.join( __dirname, '../../src/infra/generated/i18n.generated.ts'),
-        }),
+        useFactory: () => 
+{
+          const isProd = process.env.NODE_ENV === 'production';
+          return {
+            fallbackLanguage: 'es',
+            loaderOptions: {
+              path: path.join(__dirname, isProd ? '/src/interface/i18n/' : '/interface/i18n/'),
+              watch: !isProd, // Evita el watch en producción si no es necesario
+            },
+            typesOutputPath: path.join(__dirname, '../../src/infra/generated/i18n.generated.ts'),
+          };
+        },
         resolvers: [
           { use: QueryResolver, options: ['lang'] },
           AcceptLanguageResolver,
