@@ -19,8 +19,8 @@ import { SocketIoClientModule } from './infra/socket/socket.module';
         cache: true,
       }),
       I18nModule.forRootAsync({
-        useFactory: () => 
-{
+        useFactory: () =>
+        {
           const isProd = process.env.NODE_ENV === 'production';
           return {
             fallbackLanguage: 'es',

@@ -11,7 +11,7 @@ class FiltersFulfilledWithResponse
   )
   {}
 
-  isCommand(command: string): boolean
+  isCommand(command: string): boolean // Qué hago una super validación COD_HELP, COD_CHAT, COD_CHAT_HORARIO
   {
     const message = this.response.caption || this.response.body;
 
